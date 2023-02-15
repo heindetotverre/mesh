@@ -1,21 +1,25 @@
 {
-  "name": "@mesh/ui-components",
+  "name": "mesh-ui-components",
   "description": "UI Component library",
   "private": false,
-  "version": "1.0.0",
+  "version": "0.0.4",
   "type": "module",
   "files": [
     "dist"
   ],
-  "main": "dist/mesh-ui-components.umd.js",
-  "module": "dist/mesh-ui-components.es.js",
+  "main": "./dist/mesh-ui-components.umd.js",
+  "module": "./dist/mesh-ui-components.es.js",
   "exports": {
     ".": {
       "import": "./dist/mesh-ui-components.es.js",
       "require": "./dist/mesh-ui-components.umd.js"
+    },
+    "./dist/main.css": {
+      "import": "./dist/main.css",
+      "require": "./dist/main.css"
     }
   },
-  "types": "dist/main.d.ts",
+  "types": "./dist/main.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",

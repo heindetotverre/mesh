@@ -5,37 +5,22 @@
       :id="id"
       :autocomplete="autocomplete"
       :class="`input__el input__el--${type} ${domclass}`"
-      :value="currentValue"
+      v-model="currentValue"
       :type="type"
       :disabled="disabled"
       @blur="emits('blur')"
       @focus="emits('focus')"
-      @input="input($event)"
     />
     <slot name="error-message" />
   </div>
 </template>
 
 <script setup lang="ts">
-  import { computed } from "vue";
+  import { ref } from "vue";
   import shareableProps from "../shareableProps"
   import shareableEmits from "../shareableEmits"
 
-  const props = defineProps(shareableProps),
-    emits = defineEmits(shareableEmits)
-
-  const currentValue = computed({
-      get() {
-        return props.modelValue
-      },
-      set(newValue) {
-        currentValue.value = newValue
-      }
-  })
-
-  const input = (event: Event) => {
-    const inputEl = event.target as HTMLInputElement
-    emits('update:modelValue', inputEl.value)
-  }
+  const props = defineProps(shareableProps)
+  const emits = defineEmits(shareableEmits)
+  const currentValue = ref('')
 </script>
-

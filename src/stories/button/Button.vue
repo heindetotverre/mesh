@@ -2,7 +2,6 @@
   <button
     :class="['button', domclass]"
     :disabled="disabled"
-    @click="handleClick()"
   >
     {{ label }}
   </button>
@@ -10,14 +9,9 @@
 
 <script setup lang="ts">
   import shareableProps from "../shareableProps"
-  import shareableEmits from "../shareableEmits"
 
-  const props = defineProps(shareableProps),
-    emits = defineEmits(shareableEmits)
+  const props = defineProps(shareableProps)
 
-  const handleClick = () => {
-    emits('click')
-  }
 </script>
 
 <style lang="scss" scoped>

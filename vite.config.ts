@@ -30,7 +30,7 @@ export default defineConfig({
       // Could also be a dictionary or array of multiple entry points
       entry: "src/main.ts",
       name: 'MeshUIComponents',
-      formats: ["es", "cjs", "umd"],
+      formats: ["es"],
       fileName: format => `mesh-ui-components.${format}.js`
     },
     rollupOptions: {
