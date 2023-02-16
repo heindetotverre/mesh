@@ -25,7 +25,7 @@ const Template = (args) => ({
   components: { UiInput },
   setup() {
     const inputValue = ref('test')
-    const updateModel = (event) => model.value = event
+    const updateModel = (event) => inputValue.value = event
     const error = 'This is a error message'
 
     return { args, inputValue, updateModel, error }

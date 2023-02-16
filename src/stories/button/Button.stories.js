@@ -24,7 +24,8 @@ const Template = (args) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-  domclass: 'button--primary',
+  domclass: ['button--primary'],
+  disabled: false,
   label: 'Button',
   id: 'id',
   name: 'button'
@@ -32,7 +33,8 @@ Primary.args = {
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-  domclass: 'button--secondary',
+  domclass: ['button--secondary'],
+  disabled: false,
   label: 'Button',
   id: 'id',
   name: 'button'

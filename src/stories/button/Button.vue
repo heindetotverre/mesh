@@ -23,9 +23,11 @@
   display: inline-block;
   font-weight: $font-weight-heavy;
   padding: $margin calc(2 * $margin);
+  transition: .4s ease;
+  transition-property: 'background-color';
 
-  &:hover {
-    background-color: $color-grey-normal;
+  &:hover:not(:disabled) {
+    filter: brightness(1.1);
   }
 
   &--primary {
@@ -34,6 +36,7 @@
 
   &--secondary {
       background-color: $color-grey-dark;
+      color: $color-white;
   }
 }
 </style>

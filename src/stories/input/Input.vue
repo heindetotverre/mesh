@@ -7,6 +7,11 @@
       <slot name="label" />
     </label>
     <input
+      :autocomplete="autocomplete"
+      :disabled="disabled"
+      :id="id"
+      :name="name"
+      :type="type"
       @blur="focus = false"
       @focus="focus = true"
       v-model="currentValue"
