@@ -1,26 +1,63 @@
 <template>
-  <div :class="[domclass, 'input__wrapper']" v-if="visible">
-    <slot name="label" />
+  <div :class="`input input--${type} ${classes.join(' ')}`">
+    <label
+      v-if="$slots.label"
+      class="input__label"
+    >
+      <slot name="label" />
+    </label>
     <input
-      :id="id"
-      :autocomplete="autocomplete"
-      :class="`input__el input__el--${type} ${domclass}`"
+      @blur="focus = false"
+      @focus="focus = true"
       v-model="currentValue"
-      :type="type"
-      :disabled="disabled"
-      @blur="emits('blur')"
-      @focus="emits('focus')"
     />
-    <slot name="error-message" />
+    <p v-if="!validationResult" class="input__error">
+      <slot name="error-message" />
+    </p>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { computed, ref } from "vue";
   import shareableProps from "../shareableProps"
   import shareableEmits from "../shareableEmits"
 
   const props = defineProps(shareableProps)
-  const emits = defineEmits(shareableEmits)
-  const currentValue = ref('')
+  const emit = defineEmits(shareableEmits)
+
+  const focus = ref(false)
+
+  const classes = computed(() => [
+    props.domclass,
+    focus.value ? 'input--focus' : '',
+    !props.validationResult ? 'input--error' : ''
+  ])
+
+  const currentValue = computed({ 
+    get: () => props.modelValue, 
+    set: (value) => emit('update:modelValue', value) 
+  }) 
 </script>
+<style lang="scss" scoped>
+@import "../../assets/variables.scss";
+.input {
+  &__label,
+  input {
+    display: block;
+  }
+
+  &__label {
+    margin-bottom: calc(.5 * $margin);
+  }
+
+  &--error input,
+  &--error &__error {
+    border-color: red;
+    color: red;
+  }
+
+  input {
+    padding: calc(.5 * $margin) $margin;
+  }
+}
+</style>

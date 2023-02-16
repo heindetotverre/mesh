@@ -32,12 +32,12 @@ export default {
     default: ''
   },
   domclass: {
-    type: String,
-    default: ''
+    type: Array,
+    default: () => ['']
   },
-  validation: {
-    type: Object,
-    default: {}
+  validationResult: {
+    type: Boolean,
+    default: true
   },
   visible: {
     type: Boolean,
