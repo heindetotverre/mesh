@@ -1,7 +1,8 @@
 <template>
-  <div :class="`input input--${type} ${classes.join(' ')}`">
+  <div :class="`input input__${type} ${classes.join(' ')}`">
     <label
       v-if="$slots.label"
+      :for="id"
       class="input__label"
     >
       <slot name="label" />
@@ -33,7 +34,7 @@
   const focus = ref(false)
 
   const classes = computed(() => [
-    props.domclass,
+    ...props.domclass,
     focus.value ? 'input--focus' : '',
     !props.validationResult ? 'input--error' : ''
   ])

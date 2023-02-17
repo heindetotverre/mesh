@@ -1,8 +1,8 @@
-import UiButton from './Button.vue';
+import MeshButton from './MeshButton.vue';
 
 export default {
   title: 'Components/Button',
-  component: UiButton,
+  component: MeshButton,
   argTypes: {
     disabled: {
       control: { type: 'boolean' }
@@ -15,11 +15,11 @@ export default {
 };
 
 const Template = (args) => ({
-  components: { UiButton },
+  components: { MeshButton },
   setup() {
     return { args };
   },
-  template: '<ui-button v-bind="args" />',
+  template: '<MeshButton v-bind="args" />',
 });
 
 export const Primary = Template.bind({});

@@ -1,11 +1,16 @@
 import type { App } from 'vue';
-import { Button, Input } from "./stories/index";
+import { MeshButton, MeshInput, MeshForm } from "./stories/index";
+import { Forms, Form, FormField } from '../types/forms';
+
+const prefix = 'Mesh'
 
 export default {
   install: (app: App) => {
-    app.component('Button', Button);
-    app.component('Input', Input);
+    app.component(`${prefix}Button`, MeshButton);
+    app.component(`${prefix}Input`, MeshInput);
+    app.component(`${prefix}Input`, MeshForm);
   }
 };
 
-export { Button, Input };
+export { MeshButton, MeshInput, MeshForm };
+export type { Forms, Form, FormField }

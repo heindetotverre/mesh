@@ -1,39 +1,44 @@
 export default {
+  autocomplete: {
+    type: String,
+    default: ''
+  },
   disabled: {
     type: Boolean,
     default: false
+  },
+  domclass: {
+    type: Array,
+    default: ['']
+  },
+  elementName: {
+    type: String,
+    default: ''
   },
   id: {
     type: String,
     required: true
   },
-  autocomplete: {
-    type: String
-  },
-  name: {
-    type: String,
-    required: true
-  },
   label: {
     type: String,
-    default: 'test'
-  },
-  type: {
-    type: String,
-    default: 'text',
-    validator: (value : string) => ['text', 'checkbox'].includes(value)
-  },
-  options: {
-    type: Array,
-    default: []
+    default: ''
   },
   modelValue: {
     type: [String,Number,Boolean,Array,Object],
     default: ''
   },
-  domclass: {
+  name: {
+    type: String,
+    required: true
+  },
+  options: {
     type: Array,
-    default: () => ['']
+    default: []
+  },
+  type: {
+    type: String,
+    default: 'text',
+    validator: (value : string) => ['text', 'checkbox', 'password', 'email', 'button'].includes(value)
   },
   validationResult: {
     type: Boolean,
@@ -42,9 +47,5 @@ export default {
   visible: {
     type: Boolean,
     default: true
-  },
-  elementName: {
-    type: String,
-    default: ''
   }
 }

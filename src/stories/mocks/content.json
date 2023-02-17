@@ -1,0 +1,11 @@
+{
+  "labels": {
+    "email": "Email",
+    "password": "Password",
+    "passwordCheck": "Password again",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "loginButton": "Login",
+    "registerButton": "Register"
+  }
+}

@@ -9,9 +9,7 @@
 
 <script setup lang="ts">
   import shareableProps from "../shareableProps"
-
   const props = defineProps(shareableProps)
-
 </script>
 
 <style lang="scss" scoped>
@@ -26,8 +24,12 @@
   transition: .4s ease;
   transition-property: 'background-color';
 
+  &:disabled {
+    cursor: not-allowed;
+  }
+
   &:hover:not(:disabled) {
-    filter: brightness(1.1);
+    filter: brightness(1.02);
   }
 
   &--primary {
