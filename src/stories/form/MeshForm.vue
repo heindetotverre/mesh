@@ -7,15 +7,16 @@
       :id="`${field.key}_${field.id}`"
       :is="field.component"
       class="m-t-1"
-      :label="content(field.key)"
+      :label="getLabel('labels', field.key)"
       :name="field.key"
       :required="field.required"
       :type="field.type"
-      :validationResult="field.validation(formValues[field.key])"
+      :validation="field.validation"
       v-model="formValues[field.key]"
+      @blur="touched[field.key] = true"
     >
-      <template #label>{{ props.content(field.key) }}</template>
-      <template #error-message>this is an error message</template>
+      <template #label>{{ getLabel('labels', field.key) }}</template>
+      <template #error-message>{{ getLabel('validators', field.key) }}</template>
     </component>
     <div
       v-if="$slots.error && validationTotale.length"
@@ -29,7 +30,7 @@
       :is="field.component"
       class="m-t-1"
       :disabled="!!validationTotale.length"
-      :label="content(field.key)"
+      :label="getLabel('labels', field.key)"
       :name="field.key"
       :type="field.type"
     />
@@ -46,7 +47,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { PropType, computed } from 'vue'
+import { PropType, computed, reactive } from 'vue'
 import { Form } from '../../../types/forms'
 
   const props = defineProps({
@@ -69,15 +70,21 @@ import { Form } from '../../../types/forms'
     'onValidate'
   ])
 
+  const touched = reactive({}) as Record<string, unknown>
+
   const formValues = computed({ 
     get: () => props.modelValue, 
     set: (value) => emit('update:modelValue', value) 
   })
 
+  const getLabel = (type : string, key : string) => {
+    return props.content(type, key) || props.content(type, 'default')
+  }
+
   const validationTotale = computed(() => {
     let validationResultArray : {positiveValidationResult:boolean, field:string}[] = []
     props.form.fields.forEach(field => {
-      if (formValues.value[field.key] && field.validation) {
+      if (touched[field.key] && field.validation) {
         const positiveValidationResult = field.validation(formValues.value[field.key])
         if (!positiveValidationResult) {
           validationResultArray.push({ positiveValidationResult, field: field.key})

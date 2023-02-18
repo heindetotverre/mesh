@@ -13,8 +13,8 @@
       :id="id"
       :name="name"
       :type="type"
-      @blur="focus = false"
-      @focus="focus = true"
+      @blur="onBlur()"
+      @focus="[focus = true, validationResult = true]"
       v-model="currentValue"
     />
     <p v-if="!validationResult" class="input__error">
@@ -32,17 +32,23 @@
   const emit = defineEmits(shareableEmits)
 
   const focus = ref(false)
+  const validationResult = ref(true)
 
   const classes = computed(() => [
     ...props.domclass,
     focus.value ? 'input--focus' : '',
-    !props.validationResult ? 'input--error' : ''
+    !validationResult.value ? 'input--error' : ''
   ])
 
   const currentValue = computed({ 
     get: () => props.modelValue, 
     set: (value) => emit('update:modelValue', value) 
-  }) 
+  })
+
+  const onBlur = () => {
+    validationResult.value = props.validation(currentValue.value)
+    emit('blur')
+  }
 </script>
 <style lang="scss" scoped>
 @import "../../assets/variables.scss";

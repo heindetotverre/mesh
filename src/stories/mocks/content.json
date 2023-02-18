@@ -7,5 +7,10 @@
     "lastName": "Last name",
     "loginButton": "Login",
     "registerButton": "Register"
+  },
+  "validators": {
+    "email": "email not valid",
+    "password": "password not valid",
+    "default": "standard validation message"
   }
 }

@@ -3,7 +3,7 @@ import { reactive } from 'vue'
 import formMock from '../mocks/forms.json'
 import contentMock from '../mocks/content.json'
 
-const content = key => contentMock.labels[key]
+const content = (type, key) => contentMock[type]?.[key]
 
 const getForm = (formKey, errorState) => {
   const form = formMock.forms[formKey]

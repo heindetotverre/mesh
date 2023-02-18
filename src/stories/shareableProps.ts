@@ -40,9 +40,9 @@ export default {
     default: 'text',
     validator: (value : string) => ['text', 'checkbox', 'password', 'email', 'button'].includes(value)
   },
-  validationResult: {
-    type: Boolean,
-    default: true
+  validation: {
+    type: Function,
+    default: () => true
   },
   visible: {
     type: Boolean,
