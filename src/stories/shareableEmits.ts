@@ -2,5 +2,6 @@ export default [
   'blur',
   'focus',
   'submit',
-  'update:modelValue'
+  'update:modelValue',
+  'validate'
 ]

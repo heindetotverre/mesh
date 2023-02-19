@@ -35,6 +35,10 @@ export default {
     type: Array,
     default: []
   },
+  required: {
+    type: Boolean,
+    default: true
+  },
   type: {
     type: String,
     default: 'text',

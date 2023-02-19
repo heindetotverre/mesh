@@ -14,17 +14,17 @@
       :name="name"
       :type="type"
       @blur="onBlur()"
-      @focus="[focus = true, validationResult = true]"
+      @focus="onFocus()"
       v-model="currentValue"
     />
-    <p v-if="!validationResult" class="input__error">
+    <p v-if="validationResult.showMessage" class="input__error">
       <slot name="error-message" />
     </p>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { computed, ref } from "vue";
+  import { computed, onMounted, ref } from "vue";
   import shareableProps from "../shareableProps"
   import shareableEmits from "../shareableEmits"
 
@@ -32,12 +32,12 @@
   const emit = defineEmits(shareableEmits)
 
   const focus = ref(false)
-  const validationResult = ref(true)
+  const validationResult = ref<{showMessage: boolean, canSubmit: boolean}>({showMessage: false, canSubmit: false})
 
   const classes = computed(() => [
     ...props.domclass,
     focus.value ? 'input--focus' : '',
-    !validationResult.value ? 'input--error' : ''
+    validationResult.value.showMessage ? 'input--error' : ''
   ])
 
   const currentValue = computed({ 
@@ -45,9 +45,30 @@
     set: (value) => emit('update:modelValue', value) 
   })
 
+  onMounted(() => {
+    validate()
+  })
+
   const onBlur = () => {
-    validationResult.value = props.validation(currentValue.value)
-    emit('blur')
+    focus.value = false
+    validate()
+  }
+
+  const onFocus = () => {
+    focus.value = true
+    validationResult.value = {
+      showMessage: false,
+      canSubmit: props.validation(currentValue.value)
+    }
+    emit('validate', validationResult.value)
+  }
+
+  const validate = () => {
+    validationResult.value = {
+      showMessage: !currentValue.value ? false : !props.validation(currentValue.value),
+      canSubmit: !!(props.required && currentValue.value && props.validation(currentValue.value))
+    }
+    emit('validate', validationResult.value)
   }
 </script>
 <style lang="scss" scoped>

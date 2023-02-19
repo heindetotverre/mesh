@@ -68,19 +68,22 @@
           "component":"MeshInput",
           "type":"text",
           "id":"0",
-          "key": "firstName"
+          "key": "firstName",
+          "required": true
         },
         {
           "component": "MeshInput",
           "type":"text",
           "id":"1",
-          "key":"lastName"
+          "key":"lastName",
+          "required": true
         },
         {
           "component": "MeshInput",
           "type":"email",
           "id":"2",
-          "key":"email"
+          "key":"email",
+          "required": true
         },
         {
           "component":"MeshButton",

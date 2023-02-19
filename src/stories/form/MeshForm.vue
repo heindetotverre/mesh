@@ -3,7 +3,7 @@
     class="form"
   >
     <component
-      v-for="field of form.fields.filter(field => field.type !== 'button')"
+      v-for="field of formFields"
       :id="`${field.key}_${field.id}`"
       :is="field.component"
       class="m-t-1"
@@ -13,26 +13,26 @@
       :type="field.type"
       :validation="field.validation"
       v-model="formValues[field.key]"
-      @blur="touched[field.key] = true"
+      @validate="onValidate(field.key, $event)"
     >
       <template #label>{{ getLabel('labels', field.key) }}</template>
       <template #error-message>{{ getLabel('validators', field.key) }}</template>
     </component>
     <div
-      v-if="$slots.error && validationTotale.length"
+      v-if="$slots.error && validationShowMessage.length"
       class="m-t-1 error"
     >
-      <slot name="error" />{{ validationTotale.map(result => result.field) }}
+      <slot name="error" /> {{ validationShowMessage.map(result => result.field).join(' ') }}
     </div>
     <component
-      v-for="field of form.fields.filter(field => field.type === 'button')"
-      :id="`${field.key}_${field.id}`"
-      :is="field.component"
+      v-for="button of formButtons"
+      :id="`${button.key}_${button.id}`"
+      :is="button.component"
       class="m-t-1"
-      :disabled="!!validationTotale.length"
-      :label="getLabel('labels', field.key)"
-      :name="field.key"
-      :type="field.type"
+      :disabled="validationCanSubmit.length !== formFields.length"
+      :label="getLabel('labels', button.key)"
+      :name="button.key"
+      :type="button.type"
     />
   </form>
 </template>
@@ -47,7 +47,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { PropType, computed, reactive } from 'vue'
+import { PropType, computed, ref } from 'vue'
 import { Form } from '../../../types/forms'
 
   const props = defineProps({
@@ -61,39 +61,43 @@ import { Form } from '../../../types/forms'
     },
     modelValue: {
       type: Object as PropType<Record<string, any>>,
-      default: {}
+      default: () => {}
     }
   })
 
   const emit = defineEmits([
     'update:modelValue',
-    'onValidate'
+    'validate'
   ])
 
-  const touched = reactive({}) as Record<string, unknown>
+  const validationCanSubmit = ref<{field : string, canSubmit : boolean}[]>([])
+  const validationShowMessage = ref<{field: string, showMessage : boolean}[]>([])
 
   const formValues = computed({ 
     get: () => props.modelValue, 
     set: (value) => emit('update:modelValue', value) 
   })
 
+  const formButtons = props.form.fields.filter(field => field.type === 'button')
+  const formFields = props.form.fields.filter(field => field.type !== 'button')
+
   const getLabel = (type : string, key : string) => {
     return props.content(type, key) || props.content(type, 'default')
   }
 
-  const validationTotale = computed(() => {
-    let validationResultArray : {positiveValidationResult:boolean, field:string}[] = []
-    props.form.fields.forEach(field => {
-      if (touched[field.key] && field.validation) {
-        const positiveValidationResult = field.validation(formValues.value[field.key])
-        if (!positiveValidationResult) {
-          validationResultArray.push({ positiveValidationResult, field: field.key})
-        }
-      }
-    })
-    emit('onValidate', validationResultArray)
-    return validationResultArray
-  });
+  const onValidate = (field : string, { showMessage, canSubmit } : { showMessage : boolean, canSubmit : boolean }) => {
+    if (canSubmit) {
+      validationCanSubmit.value.push({ field, canSubmit })
+    } else {
+      validationCanSubmit.value = validationCanSubmit.value.filter(validateionResult => validateionResult.field !== field)
+    }
+    if (showMessage) {
+      validationShowMessage.value.push({ field, showMessage })
+    } else {
+      validationShowMessage.value = validationShowMessage.value.filter(validateionResult => validateionResult.field !== field)
+    }
+  }
+
 </script>
 <style lang="scss" scoped>
 @import "../../assets/variables.scss";
