@@ -13,8 +13,9 @@
       :id="id"
       :name="name"
       :type="type"
-      @blur="onBlur()"
-      @focus="onFocus()"
+      @blur="onBlur"
+      @focus="onFocus"
+      @input="validate"
       v-model="currentValue"
     />
     <p v-if="validationResult.showMessage" class="input__error">
@@ -24,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted, ref } from "vue";
+  import { computed, onMounted, ref, watch } from "vue";
   import shareableProps from "../shareableProps"
   import shareableEmits from "../shareableEmits"
 
@@ -45,29 +46,37 @@
     set: (value) => emit('update:modelValue', value) 
   })
 
-  onMounted(() => {
-    validate()
+  watch(() => props.forceValidation, (newVal) => {
+    if (newVal) {
+      validate(null, true)
+    }
   })
 
-  const onBlur = () => {
+  onMounted(() => {
+    validate(null)
+  })
+
+  const isValid = () => !!(props.required && currentValue.value && props.validation(currentValue.value))
+
+  const onBlur = (event : Event) => {
     focus.value = false
-    validate()
+    validate(event)
   }
 
-  const onFocus = () => {
+  const onFocus = (event : Event) => {
     focus.value = true
-    validationResult.value = {
-      showMessage: false,
-      canSubmit: props.validation(currentValue.value)
-    }
-    emit('validate', validationResult.value)
+    validate(event)
   }
 
-  const validate = () => {
-    validationResult.value = {
-      showMessage: !currentValue.value ? false : !props.validation(currentValue.value),
-      canSubmit: !!(props.required && currentValue.value && props.validation(currentValue.value))
+  const validate = (event : Event | null, force : boolean | void) => {
+    if (force) {
+      validationResult.value.showMessage = !props.validation(currentValue.value)
+    } else {
+      validationResult.value.showMessage = !(event?.type === 'focus' || event?.type === 'input' || !currentValue.value)
+        ? !props.validation(currentValue.value)
+        : false
     }
+    validationResult.value.canSubmit = isValid()
     emit('validate', validationResult.value)
   }
 </script>

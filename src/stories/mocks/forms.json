@@ -20,7 +20,7 @@
         },
         {
           "component":"MeshButton",
-          "type":"button",
+          "type":"submit",
           "id":"2",
           "key":"loginButton"
         }
@@ -54,7 +54,7 @@
           "component":"MeshButton",
           "id":"5",
           "key":"registerButton",
-          "type":"button"
+          "type":"submit"
         }
       ]
     },
