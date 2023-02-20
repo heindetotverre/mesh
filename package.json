@@ -2,7 +2,7 @@
   "name": "mesh-ui-components",
   "description": "UI Component library",
   "private": false,
-  "version": "0.1.7",
+  "version": "0.1.9",
   "type": "module",
   "files": [
     "dist"
@@ -25,7 +25,8 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "test": "vitest"
   },
   "dependencies": {
     "vue": "^3.2.45"
@@ -40,7 +41,10 @@
     "@storybook/testing-library": "^0.0.13",
     "@storybook/vue3": "^6.5.16",
     "@vitejs/plugin-vue": "^4.0.0",
+    "@vue/test-utils": "^2.3.0",
     "babel-loader": "^8.3.0",
+    "happy-dom": "^8.6.0",
+    "jest": "^29.4.3",
     "path": "^0.12.7",
     "rollup-plugin-typescript2": "^0.34.1",
     "sass": "^1.58.0",
@@ -48,6 +52,7 @@
     "typescript": "^4.9.3",
     "vite": "^4.1.0",
     "vite-plugin-dts": "^1.7.2",
+    "vitest": "^0.28.5",
     "vue-loader": "^16.8.3",
     "vue-tsc": "^1.0.24"
   },

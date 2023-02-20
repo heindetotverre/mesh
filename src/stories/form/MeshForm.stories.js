@@ -29,7 +29,7 @@ export default {
 const Template = (args) => ({
   components: { MeshForm, MeshInput, MeshButton },
   setup() {
-    const formValues = args.formValues
+    let formValues = args.formValues
       ? reactive(args.formValues)
       : reactive({})
 
