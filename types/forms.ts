@@ -1,11 +1,6 @@
-interface Forms {
-  login: Form,
-  register: Form
-}
-
 interface Form {
   meta: {
-    name: keyof Forms,
+    name: String,
     multipart: boolean,
     parts?: string[]
   },
@@ -17,6 +12,7 @@ interface FormField {
   component: string,
   disabled?: boolean,
   domclass?: string[],
+  highlightValidation?: boolean,
   id: string,
   key: string,
   label?: string,
@@ -25,6 +21,7 @@ interface FormField {
   type: string,
   required?: boolean,
   validation: Validator,
+  variant?: string,
   visible?: boolean
 }
 
@@ -33,7 +30,6 @@ interface Validator {
 }
 
 export type {
-  Forms,
   Form,
   FormField
 }

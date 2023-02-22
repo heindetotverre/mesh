@@ -1,5 +1,5 @@
 import { MeshForm, MeshInput, MeshButton } from '../index';
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { email } from '../mocks/email'
 import { nonumber } from '../mocks/nonumbers'
 import formMock from '../mocks/forms.json'
@@ -8,7 +8,6 @@ import contentMock from '../mocks/content.json'
 const content = (type, key) => contentMock[type]?.[key]
 
 const getForm = (formKey, errorState) => {
-  // set validators on form for Error Template
   const form = formMock.forms[formKey]
   form.fields.forEach(field => {
     if (errorState && field.key === 'email') {
@@ -29,25 +28,39 @@ export default {
 const Template = (args) => ({
   components: { MeshForm, MeshInput, MeshButton },
   setup() {
-    let formValues = args.formValues
-      ? reactive(args.formValues)
-      : reactive({})
+    const forceValidation = ref(false)
+    const formValues = ref(args.formValues)
 
-    const updateModel = (event) => {
-      formValues = event
+    const updateforceValidation = (value) => {
+      forceValidation.value = value
+    }
+
+    const updateValues = () => {
+      formValues.value = {}
     }
 
     const error = 'This is an error message for the total form validation for fields:'
 
-    return { args, formValues, updateModel, error }
+    return { args, formValues, error, forceValidation, updateforceValidation, updateValues }
   },
-  template: '<MeshForm v-bind="args" :modelValue="formValues" @update:formValues="updateModel"><template #error>{{ error }}</template></MeshForm><p>form: {{ formValues }}</p>'
+  template: `<MeshForm
+    v-bind="args"
+    :modelValue="formValues"
+    :forceValidation="forceValidation"
+    @update:formValues="formValues = event"
+    @update:forceValidation="updateforceValidation">
+      <template #error>{{ error }}</template>
+    </MeshForm>
+    <p>form: {{ formValues }}</p>
+    <button @click="updateforceValidation(\'clear\')">force validation clear</button>
+    <button @click="updateValues()">update values clear</button>`
 })
 
 export const Initial = Template.bind({})
 Initial.args = {
   content: content,
   form: getForm('initial', false),
+  formValues: {}
 }
 
 export const Prefilled = Template.bind({})
@@ -66,6 +79,6 @@ Error.args = {
   content: content,
   form: getForm('error', true),
   formValues: {
-    email: '1234565'
+    email: '12345'
   }
 }

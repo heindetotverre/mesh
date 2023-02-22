@@ -7,9 +7,9 @@ export default {
     disabled: {
       control: { type: 'boolean' }
     },
-    domclass: {
+    variant: {
       control: { type: 'select' },
-      options: ['button--primary','button--secondary']
+      options: ['primary','secondary', 'tertiary']
     },
   },
 };
@@ -24,7 +24,6 @@ const Template = (args) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-  domclass: ['button--primary'],
   disabled: false,
   label: 'Button',
   id: 'id',
@@ -33,11 +32,20 @@ Primary.args = {
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-  domclass: ['button--secondary'],
   disabled: false,
   label: 'Button',
   id: 'id',
-  name: 'button'
+  name: 'button',
+  variant: 'secondary'
+};
+
+export const Tertiary = Template.bind({});
+Tertiary.args = {
+  disabled: false,
+  label: 'Button',
+  id: 'id',
+  name: 'button',
+  variant: 'tertiary'
 };
 
 export const Disabled = Template.bind({});

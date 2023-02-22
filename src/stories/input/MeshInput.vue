@@ -38,9 +38,9 @@
   const classes = computed(() => [
     ...props.domclass,
     focus.value ? 'input--focus' : '',
-    validationResult.value.showMessage ? 'input--error' : ''
+    validationResult.value.showMessage ? 'input--error' : '',
+    validationResult.value.canSubmit && props.highlightValidation ? 'input--validated' : ''
   ])
-
   const currentValue = computed({ 
     get: () => props.modelValue, 
     set: (value) => emit('update:modelValue', value) 
@@ -48,7 +48,7 @@
 
   watch(() => props.forceValidation, (newVal) => {
     if (newVal) {
-      validate(null, true)
+      validate(null, newVal)
     }
   })
 
@@ -68,8 +68,13 @@
     validate(event)
   }
 
-  const validate = (event : Event | null, force : boolean | void) => {
+  const validate = (event : Event | null, force : boolean | string | void) => {
     if (force) {
+      if (force === 'clear') {
+        validationResult.value.showMessage = false
+        emit('validate', validationResult.value)
+        return
+      }
       validationResult.value.showMessage = !props.validation(currentValue.value)
     } else {
       validationResult.value.showMessage = !(event?.type === 'focus' || event?.type === 'input' || !currentValue.value)
@@ -83,6 +88,12 @@
 <style lang="scss" scoped>
 @import "../../assets/variables.scss";
 .input {
+  input {
+    border-color: $color-grey-normal;
+    border-style: solid;
+    outline: none;
+  }
+
   &__label,
   input {
     display: block;
@@ -96,6 +107,10 @@
   &--error &__error {
     border-color: red;
     color: red;
+  }
+
+  &--validated input {
+    border-color: green;
   }
 
   input {

@@ -1,6 +1,6 @@
 <template>
   <button
-    :class="['button', domclass]"
+    :class="`button ${classes.join(' ')}`"
     :disabled="disabled"
   >
     {{ label }}
@@ -9,7 +9,22 @@
 
 <script setup lang="ts">
   import shareableProps from "../shareableProps"
-  const props = defineProps(shareableProps)
+  import { computed } from "vue";
+
+  const props = defineProps({
+    ...shareableProps,
+    variant: {
+      type: String,
+      default: 'primary',
+      validator: (value : string) => ['primary', 'secondary', 'tertiary'].includes(value)
+    }
+  })
+
+  const classes = computed(() => [
+    ...props.domclass,
+    `button--${props.variant}`
+  ])
+
 </script>
 
 <style lang="scss" scoped>
@@ -28,8 +43,8 @@
     cursor: not-allowed;
   }
 
-  &:hover:not(:disabled) {
-    filter: brightness(1.02);
+  &:hover:not(:disabled):not(&--tertiary) {
+    filter: brightness(1.05);
   }
 
   &--primary {
@@ -39,6 +54,14 @@
   &--secondary {
       background-color: $color-grey-dark;
       color: $color-white;
+  }
+
+  &--tertiary {
+      background-color: transparent;
+
+      &:hover:not(:disabled) {
+        text-decoration: underline;
+      }
   }
 }
 </style>

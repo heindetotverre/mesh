@@ -1,6 +1,8 @@
 import type { App } from 'vue';
-import { MeshButton, MeshInput, MeshForm } from "./stories/index";
-import { Forms, Form, FormField } from '../types/forms';
+import MeshButton from './stories/button/MeshButton.vue';
+import MeshInput from './stories/input/MeshInput.vue';
+import MeshForm from './stories/form/MeshForm.vue';
+import { Form, FormField } from '../types/forms';
 
 export default {
   install: (app: App) => {
@@ -11,4 +13,4 @@ export default {
 };
 
 export { MeshButton, MeshInput, MeshForm };
-export type { Forms, Form, FormField }
+export type { Form, FormField }

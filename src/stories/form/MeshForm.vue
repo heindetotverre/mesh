@@ -9,11 +9,13 @@
       :is="field.component"
       class="m-t-1"
       :force-validation="forceValidation"
+      :highlight-validation="field.highlightValidation"
       :label="getLabel('labels', field.key)"
       :name="field.key"
       :required="field.required"
       :type="field.type"
       :validation="field.validation"
+      :variant="field.variant"
       v-model="formValues[field.key]"
       @validate="onValidate(field.key, $event)"
     >
@@ -32,7 +34,7 @@
         'button-wrapper',
         {['click-block']: !canSubmit}
       ]"
-      @click="forceValidate()"
+      @click="forceValidation = true"
     >
       <component
         v-for="button of formButtons"
@@ -57,13 +59,17 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { PropType, computed, ref } from 'vue'
+import { PropType, computed, ref, watch } from 'vue'
 import { Form } from '../../../types/forms'
 
   const props = defineProps({
     content: {
       type: Function,
       default: () => {}
+    },
+    forceValidation: {
+      type: [Boolean, String],
+      default: false
     },
     form: {
       type: Object as PropType<Form>,
@@ -76,23 +82,33 @@ import { Form } from '../../../types/forms'
   })
 
   const emit = defineEmits([
-    'update:modelValue',
     'submit',
-    'validate'
+    'update:modelValue',
+    'update:forceValidation'
   ])
 
-  const forceValidation = ref(false)
+  const forceValidation = ref()
   const validationStrict = ref<{field : string, canSubmit : boolean}[]>([])
   const validationLoose = ref<{field: string, showMessage : boolean}[]>([])
 
-  const canSubmit = computed(() => validationStrict.value.length === formFields.length)
+  const canSubmit = computed(() => validationStrict.value.length === formFields.value.length)
   const formValues = computed({ 
     get: () => props.modelValue, 
     set: (value) => emit('update:modelValue', value) 
   })
+  const formButtons = computed(() => props.form.fields.filter(field => field.type === 'button' || field.type === 'submit'))
+  const formFields = computed(() => props.form.fields.filter(field => field.type !== 'button' && field.type !== 'submit'))
 
-  const formButtons = props.form.fields.filter(field => field.type === 'button' || field.type === 'submit')
-  const formFields = props.form.fields.filter(field => field.type !== 'button' && field.type !== 'submit')
+  watch(() => props.form.meta.name, () => forceValidate('clear'))
+  watch(() => props.forceValidation, (newVal) => forceValidate(newVal))
+
+  const forceValidate = (instruction : string | boolean) => {
+    forceValidation.value = instruction
+    if (instruction === 'clear') {
+      validationLoose.value = []
+    }
+    emit('update:forceValidation', false)
+  }
 
   const getLabel = (type : string, key : string) => {
     return props.content(type, key) || props.content(type, 'default')
@@ -120,10 +136,6 @@ import { Form } from '../../../types/forms'
     } else {
       validationLoose.value = validationLoose.value.filter(validationResult => validationResult.field !== field)
     }
-  }
-
-  const forceValidate = () => {
-    forceValidation.value = true
   }
 
 </script>

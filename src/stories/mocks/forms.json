@@ -2,7 +2,7 @@
   "forms": {
     "initial": {
       "meta": {
-        "name":"login",
+        "name":"initial",
         "multipart":false
       },
       "fields":[
@@ -28,7 +28,7 @@
     },
     "prefilled": {
       "meta": {
-        "name":"register",
+        "name":"prefilled",
         "multipart":false
       },
       "fields":[
@@ -60,7 +60,7 @@
     },
     "error": {
       "meta": {
-        "name":"register",
+        "name":"error",
         "multipart":false
       },
       "fields":[
@@ -83,7 +83,8 @@
           "type":"email",
           "id":"2",
           "key":"email",
-          "required": true
+          "required": true,
+          "highlightValidation": true
         },
         {
           "component":"MeshButton",

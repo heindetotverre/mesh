@@ -16,6 +16,10 @@ export default {
     default: ''
   },
   forceValidation: {
+    type: [Boolean, String],
+    default: false
+  },
+  highlightValidation: {
     type: Boolean,
     default: false
   },
