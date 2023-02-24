@@ -10,51 +10,21 @@
           "component":"MeshInput",
           "type":"email",
           "id":"0",
-          "key": "email"
+          "key": "email",
+          "highlightValidation": true
         },
         {
           "component": "MeshInput",
           "type":"password",
           "id":"1",
-          "key":"password"
+          "key":"password",
+          "highlightValidation": true
         },
         {
           "component":"MeshButton",
           "type":"submit",
           "id":"2",
           "key":"loginButton"
-        }
-      ]
-    },
-    "prefilled": {
-      "meta": {
-        "name":"prefilled",
-        "multipart":false
-      },
-      "fields":[
-        { 
-          "component":"MeshInput",
-          "type":"text",
-          "id":"0",
-          "key": "firstName"
-        },
-        {
-          "component": "MeshInput",
-          "type":"text",
-          "id":"1",
-          "key":"lastName"
-        },
-        {
-          "component": "MeshInput",
-          "type":"email",
-          "id":"2",
-          "key":"email"
-        },
-        {
-          "component":"MeshButton",
-          "id":"5",
-          "key":"registerButton",
-          "type":"submit"
         }
       ]
     },
@@ -69,14 +39,16 @@
           "type":"text",
           "id":"0",
           "key": "firstName",
-          "required": true
+          "required": true,
+          "highlightValidation": true
         },
         {
           "component": "MeshInput",
           "type":"text",
           "id":"1",
           "key":"lastName",
-          "required": true
+          "required": true,
+          "highlightValidation": true
         },
         {
           "component": "MeshInput",

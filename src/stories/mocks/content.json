@@ -12,5 +12,8 @@
     "email": "email not valid",
     "password": "password not valid",
     "default": "standard validation message"
+  },
+  "messages": {
+    "global-validation-message": "the following fields have an error: "
   }
 }

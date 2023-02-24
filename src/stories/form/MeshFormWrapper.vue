@@ -2,18 +2,12 @@
   <div>Form Example</div>
   <MeshForm
     :content="content"
-    :force-validation="forceValidation"
     :name="form.meta.name"
     :formValues="formValues"
     @update:formValues="formValues = $event"
     @submit="onSubmit"
   >
-    <template #fields="{
-      forceValidation,
-      formValues,
-      getLabel,
-      onValidate
-    }">
+    <template #fields="{ getLabel, forceValidation, formValues, onValidate }">
       <MeshInput
         v-for="field of formFields"
         :id="`${field.key}_${field.id}`"
@@ -34,12 +28,8 @@
         <template #error-message>{{ getLabel('validators', field.key) }}</template>
       </MeshInput>
     </template>
-    <template #error>error in following fields: </template>
-    <template #buttons="{
-      canSubmit,
-      getLabel,
-      updateFormState
-    }">
+    <template #error>{{ content('messages', 'global-validation-message') }}</template>
+    <template #buttons="{ canSubmit, getLabel, updateFormState }">
       <MeshButton
         v-for="button of formButtons"
         class="m-t-1"
@@ -78,8 +68,6 @@ import { Form } from '../../types/forms'
   })
 
   const emit = defineEmits(shareableEmits)
-
-  const forceValidation = ref()
 
   const formValues = computed({ 
     get: () => props.formValues, 

@@ -22,7 +22,7 @@ const getForm = (formKey, errorState) => {
 }
 
 export default {
-  title: 'Components/Form Slots',
+  title: 'Components/Form',
   component: FormWrapper,
   argTypes: {},
 };
@@ -33,7 +33,7 @@ const Template = (args) => ({
     const formValues = ref(args.formValues)
 
     const onSubmit = (payload) => {
-      console.log('submit payload: ', payload)
+      formValues.value = {}
     }
 
     return { args, onSubmit, formValues }
@@ -49,15 +49,15 @@ const Template = (args) => ({
 
 export const Initial = Template.bind({});
 Initial.args = {
+  form: getForm('initial', true),
+  content: content
+};
+
+export const Error = Template.bind({});
+Error.args = {
   form: getForm('error', true),
   content: content,
   formValues: {
     email: '12345'
   }
-};
-
-export const Test = Template.bind({});
-Test.args = {
-  form: form,
-  content: content
 };

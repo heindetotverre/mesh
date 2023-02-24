@@ -13,6 +13,7 @@
       :id="id"
       :name="name"
       :type="type"
+      :required="required"
       @blur="onBlur"
       @focus="onFocus"
       @input="validate"
@@ -39,11 +40,12 @@
     ...props.domclass,
     focus.value ? 'input--focus' : '',
     validationResult.value.showMessage ? 'input--error' : '',
-    validationResult.value.canSubmit && props.highlightValidation ? 'input--validated' : ''
+    validationResult.value.canSubmit && props.highlightValidation && currentValue.value ? 'input--validated' : ''
   ])
+
   const currentValue = computed({ 
     get: () => props.modelValue, 
-    set: (value) => emit('update:modelValue', value) 
+    set: (value) => emit('update:modelValue', value)
   })
 
   watch(() => props.forceValidation, (newVal) => {
@@ -82,7 +84,7 @@
         ? !props.validation(currentValue.value)
         : false
     }
-    validationResult.value.canSubmit = isValid()
+    validationResult.value.canSubmit = isValid() 
     emit('validate', validationResult.value)
   }
 </script>

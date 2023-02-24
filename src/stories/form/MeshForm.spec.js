@@ -1,6 +1,6 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import { it, describe, expect } from 'vitest';
-import MeshForm from './MeshForm.vue';
+import MeshFormWrapper from './MeshFormWrapper.vue';
 
 describe('MeshForm', () => {
   it('renders all form fields and buttons', () => {
@@ -14,19 +14,17 @@ describe('MeshForm', () => {
       ],
     };
 
-    const wrapper = shallowMount(MeshForm, {
+    const wrapper = mount(MeshFormWrapper, {
       props: {
         form,
-        content: () => {},
-        modelValue: {},
+        content: () => {}
       },
     });
 
-    const inputFields = wrapper.findAllComponents({ name: 'MeshInput' });
-    const buttonFields = wrapper.findAllComponents({ name: 'MeshButton' });
+    console.log(wrapper.vm)
 
-    expect(inputFields.length).toBe(2);
-    expect(buttonFields.length).toBe(2);
+    expect(wrapper.vm.formFields.length).toBe(2);
+    expect(wrapper.vm.formButtons.length).toBe(2);
   });
 
   it('emits submit event with form data when submit button is clicked', async () => {
@@ -38,13 +36,13 @@ describe('MeshForm', () => {
       ],
     };
 
-    const validate = { showMessage: false, canSubmit: true }
-
-    const wrapper = shallowMount(MeshForm, {
+    const wrapper = mount(MeshFormWrapper, {
       props: {
         form,
         content: () => {},
-        modelValue: { field1: 'test value' },
+        formValues: {
+          field1: 'test value'
+        }
       },
     });
 
@@ -55,8 +53,8 @@ describe('MeshForm', () => {
     await submitButton.trigger('submit');
 
     expect(wrapper.emitted('submit')).toBeTruthy();
-    expect(wrapper.emitted('submit')[0][0]).toBe('test form');
-    expect(wrapper.emitted('submit')[0][1]).toEqual({ field1: 'test value' });
+    expect(wrapper.emitted('submit')[0][0].formName).toBe('test form');
+    expect(wrapper.emitted('submit')[0][0].formValues.value).toEqual({ field1: 'test value' });
   });
 
   it('validates form fields and enables/disables submit button based on validation', async () => {
@@ -68,11 +66,10 @@ describe('MeshForm', () => {
       ],
     };
 
-    const wrapper = shallowMount(MeshForm, {
+    const wrapper = mount(MeshFormWrapper, {
       props: {
         form,
-        content: () => {},
-        modelValue: {},
+        content: () => {}
       },
     });
 

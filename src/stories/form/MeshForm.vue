@@ -77,6 +77,7 @@ import { computed, ref, watch, PropType } from 'vue'
   const onSubmit = () => {
     if (canSubmit.value) {
       emit('submit', { formName: props.name, formValues } )
+      validationStrict.value = []
     }
   }
 
