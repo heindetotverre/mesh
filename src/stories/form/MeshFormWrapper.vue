@@ -1,5 +1,4 @@
 <template>
-  <div>Form Example</div>
   <MeshForm
     :content="content"
     :name="form.meta.name"

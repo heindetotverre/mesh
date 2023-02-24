@@ -21,8 +21,6 @@ describe('MeshForm', () => {
       },
     });
 
-    console.log(wrapper.vm)
-
     expect(wrapper.vm.formFields.length).toBe(2);
     expect(wrapper.vm.formButtons.length).toBe(2);
   });

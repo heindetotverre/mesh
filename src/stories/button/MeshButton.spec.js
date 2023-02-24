@@ -24,7 +24,8 @@ describe('MeshButton', () => {
         disabled: true
       },
     });
-    const attr = wrapper.attributes()
+    const button = wrapper.find('.button')
+    const attr = button.attributes()
     expect(Object.keys(attr).find(attr => attr === 'disabled')).toBe('disabled')
   });
 
@@ -36,8 +37,9 @@ describe('MeshButton', () => {
         domclass: ['MeshButton--primary']
       },
     });
-    expect(wrapper.classes()).toContain('button');
-    expect(wrapper.classes()).toContain('MeshButton--primary');
+    const button = wrapper.find('.button')
+    expect(button.classes()).toContain('button');
+    expect(button.classes()).toContain('MeshButton--primary');
   });
 
   it('emits a "click" event when clicked', async () => {
