@@ -72,6 +72,7 @@
     if (force) {
       if (force === 'clear') {
         validationResult.value.showMessage = false
+        validationResult.value.canSubmit = false;
         emit('validate', validationResult.value)
         return
       }

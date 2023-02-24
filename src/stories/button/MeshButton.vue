@@ -1,10 +1,19 @@
 <template>
-  <button
-    :class="`button ${classes.join(' ')}`"
-    :disabled="disabled"
-  >
-    {{ label }}
-  </button>
+    <div
+      :class="[
+        'm-t-1',
+        'button-wrapper',
+        {['click-block']: disabled}
+      ]"
+      @click="emit('disabledClick')"
+    >
+    <button
+      :class="`button ${classes.join(' ')}`"
+      :disabled="disabled"
+    >
+      {{ label }}
+    </button>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -19,6 +28,10 @@
       validator: (value : string) => ['primary', 'secondary', 'tertiary'].includes(value)
     }
   })
+
+  const emit = defineEmits([
+    'disabledClick'
+  ])
 
   const classes = computed(() => [
     ...props.domclass,
@@ -62,6 +75,18 @@
       &:hover:not(:disabled) {
         text-decoration: underline;
       }
+  }
+}
+
+.button-wrapper {
+  display: inline-block;
+}
+
+.click-block {
+  cursor: not-allowed;
+
+  button {
+    pointer-events: none;
   }
 }
 </style>

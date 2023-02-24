@@ -1,6 +1,6 @@
 interface Form {
   meta: {
-    name: String,
+    name: string,
     multipart: boolean,
     parts?: string[]
   },

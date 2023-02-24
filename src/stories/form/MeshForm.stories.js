@@ -1,11 +1,12 @@
-import { MeshForm, MeshInput, MeshButton } from '../index';
-import { reactive, ref } from 'vue'
-import { email } from '../mocks/email'
-import { nonumber } from '../mocks/nonumbers'
+import { ref } from 'vue'
+import FormWrapper from './MeshFormWrapper.vue'
 import formMock from '../mocks/forms.json'
 import contentMock from '../mocks/content.json'
+import { email } from '../mocks/email'
+import { nonumber } from '../mocks/nonumbers'
 
 const content = (type, key) => contentMock[type]?.[key]
+const form = formMock.forms.prefilled
 
 const getForm = (formKey, errorState) => {
   const form = formMock.forms[formKey]
@@ -21,64 +22,42 @@ const getForm = (formKey, errorState) => {
 }
 
 export default {
-  title: 'Components/Form',
-  component: MeshForm
-}
+  title: 'Components/Form Slots',
+  component: FormWrapper,
+  argTypes: {},
+};
 
 const Template = (args) => ({
-  components: { MeshForm, MeshInput, MeshButton },
-  setup() {
-    const forceValidation = ref(false)
+  components: { FormWrapper },
+  setup () {
     const formValues = ref(args.formValues)
 
-    const updateforceValidation = (value) => {
-      forceValidation.value = value
+    const onSubmit = (payload) => {
+      console.log('submit payload: ', payload)
     }
 
-    const updateValues = () => {
-      formValues.value = {}
-    }
-
-    const error = 'This is an error message for the total form validation for fields:'
-
-    return { args, formValues, error, forceValidation, updateforceValidation, updateValues }
+    return { args, onSubmit, formValues }
   },
-  template: `<MeshForm
-    v-bind="args"
-    :modelValue="formValues"
-    :forceValidation="forceValidation"
-    @update:formValues="formValues = event"
-    @update:forceValidation="updateforceValidation">
-      <template #error>{{ error }}</template>
-    </MeshForm>
-    <p>form: {{ formValues }}</p>
-    <button @click="updateforceValidation(\'clear\')">force validation clear</button>
-    <button @click="updateValues()">update values clear</button>`
-})
+  template: `
+    <FormWrapper
+      :content="args.content"
+      :form="args.form"
+      :formValues="formValues"
+      @submit="onSubmit"
+    />`
+});
 
-export const Initial = Template.bind({})
+export const Initial = Template.bind({});
 Initial.args = {
-  content: content,
-  form: getForm('initial', false),
-  formValues: {}
-}
-
-export const Prefilled = Template.bind({})
-Prefilled.args = {
-  content: content,
-  form: getForm('prefilled', false),
-  formValues: {
-    firstName: 'Testie',
-    lastName: 'McTestface',
-    email: 'test@test.test'
-  }
-}
-
-export const Error = Template.bind({})
-Error.args = {
-  content: content,
   form: getForm('error', true),
+  content: content,
   formValues: {
     email: '12345'
   }
-}
+};
+
+export const Test = Template.bind({});
+Test.args = {
+  form: form,
+  content: content
+};

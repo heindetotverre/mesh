@@ -1,122 +1,82 @@
 <template>
   <form
-    class="form"
     @submit.stop.prevent="onSubmit()"
   >
-    <component
-      v-for="field of formFields"
-      :id="`${field.key}_${field.id}`"
-      :is="field.component"
-      class="m-t-1"
-      :force-validation="forceValidation"
-      :highlight-validation="field.highlightValidation"
-      :label="getLabel('labels', field.key)"
-      :name="field.key"
-      :required="field.required"
-      :type="field.type"
-      :validation="field.validation"
-      :variant="field.variant"
-      v-model="formValues[field.key]"
-      @validate="onValidate(field.key, $event)"
+    <div
+      v-if="$slots.fields"
+      ref="fieldElements"
     >
-      <template #label>{{ getLabel('labels', field.key) }}</template>
-      <template #error-message>{{ getLabel('validators', field.key) }}</template>
-    </component>
+      <slot
+        name="fields"
+        :forceValidation="forceValidation"
+        :formValues="formValues"
+        :getLabel="getLabel"
+        :onValidate="onValidate"
+      />
+    </div>
     <div
       v-if="$slots.error && validationLoose.length"
       class="m-t-1 error"
     >
       <slot name="error" /> {{ validationLoose.map(result => result.field).join(' ') }}
     </div>
-    <div
-      :class="[
-        'm-t-1',
-        'button-wrapper',
-        {['click-block']: !canSubmit}
-      ]"
-      @click="forceValidation = true"
-    >
-      <component
-        v-for="button of formButtons"
-        :id="`${button.key}_${button.id}`"
-        :is="button.component"
-        :disabled="!canSubmit"
-        :label="getLabel('labels', button.key)"
-        :name="button.key"
-        :type="button.type"
-      />
-  </div>
+    <slot 
+      :canSubmit="canSubmit"
+      name="buttons"
+      :getLabel="getLabel"
+      :updateFormState="updateFormState"
+    />
   </form>
 </template>
-
-<script lang="ts">
-import { MeshButton, MeshInput } from "../index";
-export default {
-  components: {
-    MeshButton, MeshInput
-  }
-}
-</script>
-
 <script setup lang="ts">
-import { PropType, computed, ref, watch } from 'vue'
-import { Form } from '../../../types/forms'
-
+import { computed, ref, watch, PropType } from 'vue'
+  
   const props = defineProps({
     content: {
       type: Function,
       default: () => {}
     },
     forceValidation: {
-      type: [Boolean, String],
-      default: false
+      type: Object as PropType<{clearForm : boolean, clearValidation : boolean, forceValidate : boolean}>,
+      default: () => ({})
     },
-    form: {
-      type: Object as PropType<Form>,
-      required: true
-    },
-    modelValue: {
+    formValues: {
       type: Object as PropType<Record<string, any>>,
-      default: () => {}
+      default: () => ({})
+    },
+    name: {
+      type: String,
+      required: true
     }
   })
 
   const emit = defineEmits([
     'submit',
-    'update:modelValue',
+    'update:formValues',
     'update:forceValidation'
   ])
 
+  const fieldElements = ref()
   const forceValidation = ref()
   const validationStrict = ref<{field : string, canSubmit : boolean}[]>([])
   const validationLoose = ref<{field: string, showMessage : boolean}[]>([])
 
-  const canSubmit = computed(() => validationStrict.value.length === formFields.value.length)
   const formValues = computed({ 
-    get: () => props.modelValue, 
-    set: (value) => emit('update:modelValue', value) 
+    get: () => props.formValues, 
+    set: (value) => emit('update:formValues', value)
   })
-  const formButtons = computed(() => props.form.fields.filter(field => field.type === 'button' || field.type === 'submit'))
-  const formFields = computed(() => props.form.fields.filter(field => field.type !== 'button' && field.type !== 'submit'))
+  const canSubmit = computed(() => validationStrict.value.length === fieldElements.value?.children.length)
 
-  watch(() => props.form.meta.name, () => forceValidate('clear'))
-  watch(() => props.forceValidation, (newVal) => forceValidate(newVal))
+  watch(() => props.name, () => updateFormState({ clearForm : true, clearValidation : true, forceValidate: false }))
+  watch(() => props.forceValidation, (newValue) => updateFormState(newValue))
 
-  const forceValidate = (instruction : string | boolean) => {
-    forceValidation.value = instruction
-    if (instruction === 'clear') {
-      validationLoose.value = []
-    }
-    emit('update:forceValidation', false)
-  }
-
-  const getLabel = (type : string, key : string) => {
+  const getLabel = (type : string, key : string | undefined) => {
     return props.content(type, key) || props.content(type, 'default')
   }
 
   const onSubmit = () => {
     if (canSubmit.value) {
-      emit('submit', props.form.meta.name, formValues.value)
+      emit('submit', { formName: props.name, formValues } )
     }
   }
 
@@ -138,6 +98,23 @@ import { Form } from '../../../types/forms'
     }
   }
 
+  const updateFormState = ({ clearForm, clearValidation, forceValidate } : { clearForm : boolean | void, clearValidation : boolean | void, forceValidate : boolean | string | void }) => {
+    if(forceValidate) {
+      forceValidation.value = forceValidate
+      emit('update:forceValidation', false)
+    }
+    if (clearForm) {
+      for (var value in formValues.value){
+        if (formValues.value.hasOwnProperty(value)) {
+            delete formValues.value[value];
+        }
+      }
+    }
+    if (clearValidation) {
+      forceValidation.value = 'clear'
+      validationLoose.value = []
+    }
+  }
 </script>
 <style lang="scss" scoped>
 @import "../../assets/variables.scss";
@@ -147,17 +124,5 @@ import { Form } from '../../../types/forms'
 
 .error {
   color: red;
-}
-
-.button-wrapper {
-  display: inline-block;
-}
-
-.click-block {
-  cursor: not-allowed;
-
-  button {
-    pointer-events: none;
-  }
 }
 </style>
