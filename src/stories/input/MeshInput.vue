@@ -16,7 +16,7 @@
       :required="required"
       @blur="onBlur"
       @focus="onFocus"
-      @input="validate"
+      @input="validate({})"
       v-model="currentValue"
     />
     <p v-if="validationResult.showMessage" class="input__error">
@@ -29,6 +29,7 @@
   import { computed, onMounted, ref, watch } from "vue";
   import shareableProps from "../shareableProps"
   import shareableEmits from "../shareableEmits"
+import { ValidationConfig } from "@/types/forms";
 
   const props = defineProps(shareableProps)
   const emit = defineEmits(shareableEmits)
@@ -50,39 +51,40 @@
 
   watch(() => props.forceValidation, (newVal) => {
     if (newVal) {
-      validate(null, newVal)
+      validate(newVal)
     }
   })
 
   onMounted(() => {
-    validate(null)
+    validate({ looseValidate: true })
   })
 
   const isValid = () => !!(props.required && currentValue.value && props.validation(currentValue.value))
 
-  const onBlur = (event : Event) => {
+  const onBlur = () => {
     focus.value = false
-    validate(event)
+    validate({ looseValidate: true })
   }
 
-  const onFocus = (event : Event) => {
+  const onFocus = () => {
     focus.value = true
-    validate(event)
+    validate({ clearLooseValidation: true })
   }
 
-  const validate = (event : Event | null, force : boolean | string | void) => {
-    if (force) {
-      if (force === 'clear') {
+  const validate = ({ clearLooseValidation, clearStrictValidation, looseValidate, strictValidate } : ValidationConfig) => {
+    if (clearStrictValidation) {
         validationResult.value.showMessage = false
         validationResult.value.canSubmit = false;
-        emit('validate', validationResult.value)
         return
-      }
+    }
+    if (clearLooseValidation) {
+      validationResult.value.showMessage = false
+    }
+    if (strictValidate) {
       validationResult.value.showMessage = !props.validation(currentValue.value)
-    } else {
-      validationResult.value.showMessage = !(event?.type === 'focus' || event?.type === 'input' || !currentValue.value)
-        ? !props.validation(currentValue.value)
-        : false
+    }
+    if (looseValidate) {
+      validationResult.value.showMessage = !!(currentValue.value && !props.validation(currentValue.value))
     }
     validationResult.value.canSubmit = isValid() 
     emit('validate', validationResult.value)

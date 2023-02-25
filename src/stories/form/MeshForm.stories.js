@@ -31,20 +31,32 @@ const Template = (args) => ({
   components: { FormWrapper },
   setup () {
     const formValues = ref(args.formValues)
+    const forceValidation = ref({})
 
     const onSubmit = (payload) => {
       formValues.value = {}
     }
 
-    return { args, onSubmit, formValues }
+    const clearForm = () => {
+      formValues.value = {}
+    }
+
+    const clearValidation = () => {
+      forceValidation.value = { clearStrictValidation: true }
+    }
+
+    return { args, onSubmit, formValues, clearForm, clearValidation, forceValidation }
   },
-  template: `
+  template:`
     <FormWrapper
       :content="args.content"
+      :force-validation="forceValidation"
       :form="args.form"
       :formValues="formValues"
       @submit="onSubmit"
-    />`
+    />
+    <button @click="clearForm">clear form</button>
+    <button @click="clearValidation">clear validation</button>`
 });
 
 export const Initial = Template.bind({});

@@ -2,6 +2,7 @@
   <MeshForm
     :content="content"
     :name="form.meta.name"
+    :force-validation="props.forceValidation"
     :formValues="formValues"
     @update:formValues="formValues = $event"
     @submit="onSubmit"
@@ -38,7 +39,7 @@
         :label="getLabel('labels', button.key)"
         :name="button.key"
         :type="button.type"
-        @disabledClick="updateFormState({ clearForm: false, clearValidation: false, forceValidate: true })"
+        @disabledClick="updateFormState({ strictValidate: true })"
       />
     </template>
   </MeshForm>
@@ -49,7 +50,7 @@ import MeshButton from '../button/MeshButton.vue';
 import MeshForm from './MeshForm.vue'
 import MeshInput from '../input/MeshInput.vue';
 import shareableEmits from "../shareableEmits"
-import { Form } from '../../types/forms'
+import { Form, ValidationConfig } from '../../types/forms'
 
   const props = defineProps({
     form: {
@@ -59,6 +60,10 @@ import { Form } from '../../types/forms'
     content: {
       type: Function,
       required: true
+    },
+    forceValidation: {
+      type: Object as PropType<ValidationConfig>,
+      default: () => ({})
     },
     formValues: {
       type: Object,

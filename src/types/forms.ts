@@ -25,11 +25,27 @@ interface FormField {
   visible?: boolean
 }
 
+interface ValidationConfig {
+  clearForm?: boolean,
+  clearLooseValidation?: boolean,
+  clearStrictValidation?: boolean,
+  looseValidate?: boolean,
+  strictValidate?: boolean
+}
+
+interface ValidationResult {
+  showMessage: boolean,
+  canSubmit: boolean
+}
+
 interface Validator {
   (input: string): boolean
 }
 
 export type {
   Form,
-  FormField
+  FormField,
+  ValidationConfig,
+  ValidationResult,
+  Validator
 }

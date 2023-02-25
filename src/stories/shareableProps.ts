@@ -1,3 +1,6 @@
+import { PropType } from "vue"
+import { ValidationConfig, Validator } from '../types/forms'
+
 export default {
   autocomplete: {
     type: String,
@@ -16,7 +19,7 @@ export default {
     default: ''
   },
   forceValidation: {
-    type: [Boolean, String],
+    type: Object as PropType<ValidationConfig>,
     default: false
   },
   highlightValidation: {

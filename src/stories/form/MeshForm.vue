@@ -30,6 +30,7 @@
 </template>
 <script setup lang="ts">
 import { computed, ref, watch, PropType } from 'vue'
+import { ValidationConfig, ValidationResult } from '../../types/forms'
   
   const props = defineProps({
     content: {
@@ -37,7 +38,7 @@ import { computed, ref, watch, PropType } from 'vue'
       default: () => {}
     },
     forceValidation: {
-      type: Object as PropType<{clearForm : boolean, clearValidation : boolean, forceValidate : boolean}>,
+      type: Object as PropType<ValidationConfig>,
       default: () => ({})
     },
     formValues: {
@@ -57,7 +58,7 @@ import { computed, ref, watch, PropType } from 'vue'
   ])
 
   const fieldElements = ref()
-  const forceValidation = ref()
+  const forceValidation = ref<ValidationConfig>()
   const validationStrict = ref<{field : string, canSubmit : boolean}[]>([])
   const validationLoose = ref<{field: string, showMessage : boolean}[]>([])
 
@@ -67,7 +68,7 @@ import { computed, ref, watch, PropType } from 'vue'
   })
   const canSubmit = computed(() => validationStrict.value.length === fieldElements.value?.children.length)
 
-  watch(() => props.name, () => updateFormState({ clearForm : true, clearValidation : true, forceValidate: false }))
+  watch(() => props.name, () => updateFormState({ clearForm : true, clearStrictValidation : true }))
   watch(() => props.forceValidation, (newValue) => updateFormState(newValue))
 
   const getLabel = (type : string, key : string | undefined) => {
@@ -81,8 +82,7 @@ import { computed, ref, watch, PropType } from 'vue'
     }
   }
 
-  const onValidate = (field : string, { showMessage, canSubmit } : { showMessage : boolean, canSubmit : boolean }) => {
-    if (forceValidation.value) forceValidation.value = false
+  const onValidate = (field : string, { showMessage, canSubmit } : ValidationResult) => {
     if (canSubmit) {
       if (!validationStrict.value.find(validationResult => validationResult.field === field)) {
         validationStrict.value.push({ field, canSubmit })
@@ -99,11 +99,7 @@ import { computed, ref, watch, PropType } from 'vue'
     }
   }
 
-  const updateFormState = ({ clearForm, clearValidation, forceValidate } : { clearForm : boolean | void, clearValidation : boolean | void, forceValidate : boolean | string | void }) => {
-    if(forceValidate) {
-      forceValidation.value = forceValidate
-      emit('update:forceValidation', false)
-    }
+  const updateFormState = ({ clearForm, clearStrictValidation, strictValidate } : ValidationConfig) => {
     if (clearForm) {
       for (var value in formValues.value){
         if (formValues.value.hasOwnProperty(value)) {
@@ -111,10 +107,12 @@ import { computed, ref, watch, PropType } from 'vue'
         }
       }
     }
-    if (clearValidation) {
-      forceValidation.value = 'clear'
+    if (clearStrictValidation) {
       validationLoose.value = []
+      validationStrict.value = []
     }
+    forceValidation.value = { clearStrictValidation, strictValidate }
+    emit('update:forceValidation', false)
   }
 </script>
 <style lang="scss" scoped>
