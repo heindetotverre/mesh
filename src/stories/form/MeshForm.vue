@@ -58,7 +58,7 @@ import { ValidationConfig, ValidationResult } from '../../types/forms'
   ])
 
   const fieldElements = ref()
-  const forceValidation = ref<ValidationConfig>()
+  const forceValidation = ref<ValidationConfig>({})
   const validationStrict = ref<{field : string, canSubmit : boolean}[]>([])
   const validationLoose = ref<{field: string, showMessage : boolean}[]>([])
 
@@ -112,7 +112,7 @@ import { ValidationConfig, ValidationResult } from '../../types/forms'
       validationStrict.value = []
     }
     forceValidation.value = { clearStrictValidation, strictValidate }
-    emit('update:forceValidation', false)
+    emit('update:forceValidation', {})
   }
 </script>
 <style lang="scss" scoped>

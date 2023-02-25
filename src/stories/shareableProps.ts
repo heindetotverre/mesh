@@ -20,7 +20,7 @@ export default {
   },
   forceValidation: {
     type: Object as PropType<ValidationConfig>,
-    default: false
+    default: () => ({})
   },
   highlightValidation: {
     type: Boolean,
