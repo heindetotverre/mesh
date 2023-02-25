@@ -55,9 +55,9 @@ export default {
     default: 'text',
     validator: (value : string) => ['text', 'checkbox', 'password', 'email', 'button', 'submit'].includes(value)
   },
-  validation: {
-    type: Function,
-    default: () => true
+  validators: {
+    type: Array as PropType<Validator[]>,
+    default: []
   },
   visible: {
     type: Boolean,

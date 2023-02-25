@@ -25,7 +25,7 @@ describe('Input', () => {
         name: 'input',
         modelValue: '99',
         required: true,
-        validation: (value) => nonumber(value),
+        validation: [(value) => nonumber(value)],
       },
     })
     const input = wrapper.find('input')
@@ -41,7 +41,7 @@ describe('Input', () => {
         name: 'input',
         modelValue: 'valid value',
         required: true,
-        validation: (value) => value.length > 0,
+        validation: [(value) => value.length > 0],
       },
     })
     const input = wrapper.find('input')

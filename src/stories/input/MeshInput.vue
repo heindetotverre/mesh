@@ -19,7 +19,7 @@
       @input="validate({})"
       v-model="currentValue"
     />
-    <p v-if="validationResult.showMessage" class="input__error">
+    <p v-if="validationResult.messages.length" class="input__error">
       <slot name="error-message" />
     </p>
   </div>
@@ -29,18 +29,18 @@
   import { computed, onMounted, ref, watch } from "vue";
   import shareableProps from "../shareableProps"
   import shareableEmits from "../shareableEmits"
-import { ValidationConfig } from "@/types/forms";
+  import { ValidationConfig } from "@/types/forms";
 
   const props = defineProps(shareableProps)
   const emit = defineEmits(shareableEmits)
 
   const focus = ref(false)
-  const validationResult = ref<{showMessage: boolean, canSubmit: boolean}>({showMessage: false, canSubmit: false})
+  const validationResult = ref<{messages: { key : string }[], canSubmit: boolean}>({messages: [], canSubmit: false})
 
   const classes = computed(() => [
     ...props.domclass,
     focus.value ? 'input--focus' : '',
-    validationResult.value.showMessage ? 'input--error' : '',
+    validationResult.value.messages.length ? 'input--error' : '',
     validationResult.value.canSubmit && props.highlightValidation && currentValue.value ? 'input--validated' : ''
   ])
 
@@ -56,14 +56,14 @@ import { ValidationConfig } from "@/types/forms";
   })
 
   onMounted(() => {
-    validate({ looseValidate: true })
+    validate({ validateLoose: true })
   })
 
-  const isValid = () => !!(props.required && currentValue.value && props.validation(currentValue.value))
+  const isValid = () => !!(props.required && currentValue.value && !getValidatedMeta({ validateStrict: true }).length)
 
   const onBlur = () => {
     focus.value = false
-    validate({ looseValidate: true })
+    validate({ validateLoose: true })
   }
 
   const onFocus = () => {
@@ -71,20 +71,35 @@ import { ValidationConfig } from "@/types/forms";
     validate({ clearLooseValidation: true })
   }
 
-  const validate = ({ clearLooseValidation, clearStrictValidation, looseValidate, strictValidate } : ValidationConfig) => {
+  const getValidatedMeta = ({ validateStrict, validateLoose } : ValidationConfig) : { key : string }[] => {
+    return props.validators.reduce((acc : { key : string }[], curr) => {
+      const meta = {
+        key: curr.name
+      }
+      if (validateStrict && !curr(currentValue.value)) {
+        return [...acc, meta]
+      }
+      if (validateLoose && !!(currentValue.value && !curr(currentValue.value))) {
+        return [...acc, meta]
+      }
+      return acc
+    }, [])
+  }
+
+  const validate = ({ clearLooseValidation, clearStrictValidation, validateLoose, validateStrict } : ValidationConfig) => {
     if (clearStrictValidation) {
-        validationResult.value.showMessage = false
+        validationResult.value.messages = []
         validationResult.value.canSubmit = false;
         return
     }
     if (clearLooseValidation) {
-      validationResult.value.showMessage = false
+      validationResult.value.messages = []
     }
-    if (strictValidate) {
-      validationResult.value.showMessage = !props.validation(currentValue.value)
+    if (validateStrict) {
+      validationResult.value.messages = getValidatedMeta({ validateStrict })
     }
-    if (looseValidate) {
-      validationResult.value.showMessage = !!(currentValue.value && !props.validation(currentValue.value))
+    if (validateLoose) {
+      validationResult.value.messages = getValidatedMeta({ validateLoose })
     }
     validationResult.value.canSubmit = isValid() 
     emit('validate', validationResult.value)

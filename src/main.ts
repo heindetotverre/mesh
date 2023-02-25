@@ -3,7 +3,14 @@ import MeshButton from './stories/button/MeshButton.vue';
 import MeshInput from './stories/input/MeshInput.vue';
 import MeshFormWrapper from './stories/form/MeshFormWrapper.vue';
 import MeshForm from './stories/form/MeshForm.vue';
-import { Form, FormField } from './types/forms';
+import {
+  Content,
+  Form,
+  FormField,
+  ValidationConfig,
+  ValidationResult,
+  Validator
+} from './types/forms';
 
 export default {
   install: (app: App) => {
@@ -14,4 +21,11 @@ export default {
   }
 };
 export { MeshButton, MeshInput, MeshForm, MeshFormWrapper };
-export type { Form, FormField }
+export type { 
+  Content,
+  Form,
+  FormField,
+  ValidationConfig,
+  ValidationResult,
+  Validator
+}

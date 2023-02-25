@@ -6,16 +6,15 @@ import { email } from '../mocks/email'
 import { nonumber } from '../mocks/nonumbers'
 
 const content = (type, key) => contentMock[type]?.[key]
-const form = formMock.forms.prefilled
 
 const getForm = (formKey, errorState) => {
   const form = formMock.forms[formKey]
   form.fields.forEach(field => {
     if (errorState && field.key === 'email') {
-      field.validation = email
+      field.validators = [email, nonumber]
     }
     if (errorState && (field.key === 'firstName' || field.key === 'lastName')) {
-      field.validation = nonumber
+      field.validators = [nonumber]
     }
   })
   return form
@@ -71,5 +70,16 @@ Error.args = {
   content: content,
   formValues: {
     email: '12345'
+  }
+};
+
+export const Filled = Template.bind({});
+Filled.args = {
+  form: getForm('error', true),
+  content: content,
+  formValues: {
+    firstName: 'Testie',
+    lastName: 'McTestFace',
+    email: 'nonumberemail@validator.test'
   }
 };

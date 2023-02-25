@@ -1,3 +1,7 @@
+interface Content {
+  (type: string, key: string): string
+}
+
 interface Form {
   meta: {
     name: string,
@@ -20,7 +24,7 @@ interface FormField {
   options?: string[],
   type: string,
   required?: boolean,
-  validation: Validator,
+  validators: Validator[],
   variant?: string,
   visible?: boolean
 }
@@ -29,20 +33,23 @@ interface ValidationConfig {
   clearForm?: boolean,
   clearLooseValidation?: boolean,
   clearStrictValidation?: boolean,
-  looseValidate?: boolean,
-  strictValidate?: boolean
+  validateLoose?: boolean,
+  validateStrict?: boolean
 }
 
 interface ValidationResult {
-  showMessage: boolean,
-  canSubmit: boolean
+  field: string,
+  messages?: { key: string }[],
+  canSubmit?: boolean,
+  showMessage?: boolean
 }
 
 interface Validator {
-  (input: string): boolean
+  (input: string | number | boolean | unknown | Record<string, any>): boolean
 }
 
 export type {
+  Content,
   Form,
   FormField,
   ValidationConfig,

@@ -10,8 +10,8 @@
         name="fields"
         :forceValidation="forceValidation"
         :formValues="formValues"
-        :getLabel="getLabel"
         :onValidate="onValidate"
+        :validationMessages="validationMessagesPerField"
       />
     </div>
     <div
@@ -23,19 +23,18 @@
     <slot 
       :canSubmit="canSubmit"
       name="buttons"
-      :getLabel="getLabel"
       :updateFormState="updateFormState"
     />
   </form>
 </template>
 <script setup lang="ts">
 import { computed, ref, watch, PropType } from 'vue'
-import { ValidationConfig, ValidationResult } from '../../types/forms'
+import { Content, ValidationConfig, ValidationResult } from '../../types/forms'
   
   const props = defineProps({
     content: {
-      type: Function,
-      default: () => {}
+      type: Function as PropType<Content>,
+      default: () => ''
     },
     forceValidation: {
       type: Object as PropType<ValidationConfig>,
@@ -60,7 +59,7 @@ import { ValidationConfig, ValidationResult } from '../../types/forms'
   const fieldElements = ref()
   const forceValidation = ref<ValidationConfig>({})
   const validationStrict = ref<{field : string, canSubmit : boolean}[]>([])
-  const validationLoose = ref<{field: string, showMessage : boolean}[]>([])
+  const validationLoose = ref<ValidationResult[]>([])
 
   const formValues = computed({ 
     get: () => props.formValues, 
@@ -71,10 +70,6 @@ import { ValidationConfig, ValidationResult } from '../../types/forms'
   watch(() => props.name, () => updateFormState({ clearForm : true, clearStrictValidation : true }))
   watch(() => props.forceValidation, (newValue) => updateFormState(newValue))
 
-  const getLabel = (type : string, key : string | undefined) => {
-    return props.content(type, key) || props.content(type, 'default')
-  }
-
   const onSubmit = () => {
     if (canSubmit.value) {
       emit('submit', { formName: props.name, formValues } )
@@ -82,7 +77,7 @@ import { ValidationConfig, ValidationResult } from '../../types/forms'
     }
   }
 
-  const onValidate = (field : string, { showMessage, canSubmit } : ValidationResult) => {
+  const onValidate = (field : string, { messages, canSubmit } : ValidationResult) => {
     if (canSubmit) {
       if (!validationStrict.value.find(validationResult => validationResult.field === field)) {
         validationStrict.value.push({ field, canSubmit })
@@ -90,16 +85,16 @@ import { ValidationConfig, ValidationResult } from '../../types/forms'
     } else {
       validationStrict.value = validationStrict.value.filter(validationResult => validationResult.field !== field)
     }
-    if (showMessage) {
+    if (messages?.length) {
       if (!validationLoose.value.find(validationResult => validationResult.field === field)) {
-        validationLoose.value.push({ field, showMessage })
+        validationLoose.value.push({ field, showMessage: true, messages })
       }
     } else {
       validationLoose.value = validationLoose.value.filter(validationResult => validationResult.field !== field)
     }
   }
 
-  const updateFormState = ({ clearForm, clearStrictValidation, strictValidate } : ValidationConfig) => {
+  const updateFormState = ({ clearForm, clearStrictValidation, validateStrict } : ValidationConfig) => {
     if (clearForm) {
       for (var value in formValues.value){
         if (formValues.value.hasOwnProperty(value)) {
@@ -111,8 +106,12 @@ import { ValidationConfig, ValidationResult } from '../../types/forms'
       validationLoose.value = []
       validationStrict.value = []
     }
-    forceValidation.value = { clearStrictValidation, strictValidate }
+    forceValidation.value = { clearStrictValidation, validateStrict }
     emit('update:forceValidation', {})
+  }
+
+  const validationMessagesPerField = (fieldKey : string) => {
+    return validationLoose.value.find((message) => message.field === fieldKey)?.messages || []
   }
 </script>
 <style lang="scss" scoped>

@@ -7,7 +7,7 @@
     @update:formValues="formValues = $event"
     @submit="onSubmit"
   >
-    <template #fields="{ getLabel, forceValidation, formValues, onValidate }">
+    <template #fields="{ forceValidation, formValues, onValidate, validationMessages }">
       <MeshInput
         v-for="field of formFields"
         :id="`${field.key}_${field.id}`"
@@ -15,42 +15,44 @@
         class="m-t-1"
         :force-validation="forceValidation"
         :highlight-validation="field.highlightValidation"
-        :label="getLabel('labels', field.key)"
+        :label="content('labels', field.key)"
         :name="field.key"
         :required="field.required"
         :type="field.type"
-        :validation="field.validation"
-        :variant="field.variant"
+        :validators="field.validators"
         v-model="formValues[field.key]"
         @validate="onValidate(field.key, $event)"
       >
-        <template #label>{{ getLabel('labels', field.key) }}</template>
-        <template #error-message>{{ getLabel('validators', field.key) }}</template>
+        <template #label>{{ content('labels', field.key) }}</template>
+        <template #error-message>
+          <p v-for="{ key } of validationMessages(field.key)">{{ content('validators', key) || content('validators', 'default') }}</p>
+        </template>
       </MeshInput>
     </template>
     <template #error>{{ content('messages', 'global-validation-message') }}</template>
-    <template #buttons="{ canSubmit, getLabel, updateFormState }">
+    <template #buttons="{ canSubmit, updateFormState }">
       <MeshButton
         v-for="button of formButtons"
         class="m-t-1"
         :id="`${button.key}_${button.id}`"
         :is="button.component"
         :disabled="!canSubmit"
-        :label="getLabel('labels', button.key)"
+        :label="content('labels', button.key)"
         :name="button.key"
         :type="button.type"
-        @disabledClick="updateFormState({ strictValidate: true })"
+        :variant="button.variant"
+        @disabledClick="updateFormState({ validateStrict: true })"
       />
     </template>
   </MeshForm>
 </template>
 <script setup lang="ts">
-import { computed, ref, PropType } from 'vue'
+import { computed, PropType } from 'vue'
 import MeshButton from '../button/MeshButton.vue';
 import MeshForm from './MeshForm.vue'
 import MeshInput from '../input/MeshInput.vue';
 import shareableEmits from "../shareableEmits"
-import { Form, ValidationConfig } from '../../types/forms'
+import { Content, Form, ValidationConfig } from '../../types/forms'
 
   const props = defineProps({
     form: {
@@ -58,7 +60,7 @@ import { Form, ValidationConfig } from '../../types/forms'
         required: true
     },
     content: {
-      type: Function,
+      type: Function as PropType<Content>,
       required: true
     },
     forceValidation: {

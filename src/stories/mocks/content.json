@@ -11,6 +11,7 @@
   "validators": {
     "email": "email not valid",
     "password": "password not valid",
+    "nonumber": "no numbers allowed",
     "default": "standard validation message"
   },
   "messages": {
