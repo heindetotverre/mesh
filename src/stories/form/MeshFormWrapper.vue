@@ -7,7 +7,7 @@
     @update:formValues="formValues = $event"
     @submit="onSubmit"
   >
-    <template #fields="{ forceValidation, formValues, onValidate, validationMessages }">
+    <template #fields="{ forceValidation, formValues, getSecondValdiationValue, onValidate, validationMessages }">
       <MeshInput
         v-for="field of formFields"
         :id="`${field.key}_${field.id}`"
@@ -18,6 +18,7 @@
         :label="content('labels', field.key)"
         :name="field.key"
         :required="field.required"
+        :second-validation-value="getSecondValdiationValue(field.secondValidationValue)"
         :type="field.type"
         :validators="field.validators"
         v-model="formValues[field.key]"
@@ -73,7 +74,11 @@ import { Content, Form, ValidationConfig } from '../../types/forms'
     }
   })
 
-  const emit = defineEmits(shareableEmits)
+  const emit = defineEmits([
+    'submit',
+    'update:formValues',
+    'update:forceValidation'
+  ])
 
   const formValues = computed({ 
     get: () => props.formValues, 

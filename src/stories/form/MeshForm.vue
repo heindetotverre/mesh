@@ -10,6 +10,7 @@
         name="fields"
         :forceValidation="forceValidation"
         :formValues="formValues"
+        :getSecondValdiationValue="getSecondValdiationValue"
         :onValidate="onValidate"
         :validationMessages="validationMessagesPerField"
       />
@@ -58,7 +59,7 @@ import { Content, ValidationConfig, ValidationResult } from '../../types/forms'
 
   const fieldElements = ref()
   const forceValidation = ref<ValidationConfig>({})
-  const validationStrict = ref<{field : string, canSubmit : boolean}[]>([])
+  const validationStrict = ref<ValidationResult[]>([])
   const validationLoose = ref<ValidationResult[]>([])
 
   const formValues = computed({ 
@@ -69,6 +70,10 @@ import { Content, ValidationConfig, ValidationResult } from '../../types/forms'
 
   watch(() => props.name, () => updateFormState({ clearForm : true, clearStrictValidation : true }))
   watch(() => props.forceValidation, (newValue) => updateFormState(newValue))
+
+  const getSecondValdiationValue = (key : string | undefined) => {
+    return key ? formValues.value[key] : ''
+  }
 
   const onSubmit = () => {
     if (canSubmit.value) {

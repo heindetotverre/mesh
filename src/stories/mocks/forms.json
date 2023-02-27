@@ -65,6 +65,43 @@
           "type":"button"
         }
       ]
+    },
+    "passwordCheck": {
+      "meta": {
+        "name":"error",
+        "multipart":false
+      },
+      "fields":[
+        {
+          "component": "MeshInput",
+          "type":"email",
+          "id":"2",
+          "key":"email",
+          "required": true,
+          "highlightValidation": true
+        },
+        {
+          "component": "MeshInput",
+          "type":"password",
+          "id":"1",
+          "key":"password",
+          "highlightValidation": true
+        },
+        {
+          "component": "MeshInput",
+          "type":"password",
+          "id":"1",
+          "key":"passwordCheck",
+          "secondValidationValue": "password",
+          "highlightValidation": true
+        },
+        {
+          "component":"MeshButton",
+          "id":"5",
+          "key":"registerButton",
+          "type":"button"
+        }
+      ]
     }
   }
 }

@@ -31,7 +31,13 @@
   import shareableEmits from "../shareableEmits"
   import { ValidationConfig } from "@/types/forms";
 
-  const props = defineProps(shareableProps)
+  const props = defineProps({
+    ...shareableProps,
+    secondValidationValue: {
+      type: String,
+      default: ''
+    }
+  })
   const emit = defineEmits(shareableEmits)
 
   const focus = ref(false)
@@ -43,11 +49,11 @@
     validationResult.value.messages.length ? 'input--error' : '',
     validationResult.value.canSubmit && props.highlightValidation && currentValue.value ? 'input--validated' : ''
   ])
-
   const currentValue = computed({ 
     get: () => props.modelValue, 
-    set: (value) => emit('update:modelValue', value)
+    set: (value) => [emit('update:modelValue', value), validate({})]
   })
+  const isValid = computed(() => !!(props.required && currentValue.value && !getValidatedMeta({ validateStrict: true }).length))
 
   watch(() => props.forceValidation, (newVal) => {
     if (newVal) {
@@ -58,8 +64,6 @@
   onMounted(() => {
     validate({ validateLoose: true })
   })
-
-  const isValid = () => !!(props.required && currentValue.value && !getValidatedMeta({ validateStrict: true }).length)
 
   const onBlur = () => {
     focus.value = false
@@ -76,10 +80,10 @@
       const meta = {
         key: curr.name
       }
-      if (validateStrict && !curr(currentValue.value)) {
+      if (validateStrict && !curr(currentValue.value, props.secondValidationValue)) {
         return [...acc, meta]
       }
-      if (validateLoose && !!(currentValue.value && !curr(currentValue.value))) {
+      if (validateLoose && !!(currentValue.value && !curr(currentValue.value, props.secondValidationValue))) {
         return [...acc, meta]
       }
       return acc
@@ -87,6 +91,7 @@
   }
 
   const validate = ({ clearLooseValidation, clearStrictValidation, validateLoose, validateStrict } : ValidationConfig) => {
+    console.log(currentValue.value)
     if (clearStrictValidation) {
         validationResult.value.messages = []
         validationResult.value.canSubmit = false;
@@ -101,7 +106,7 @@
     if (validateLoose) {
       validationResult.value.messages = getValidatedMeta({ validateLoose })
     }
-    validationResult.value.canSubmit = isValid() 
+    validationResult.value.canSubmit = isValid.value
     emit('validate', validationResult.value)
   }
 </script>

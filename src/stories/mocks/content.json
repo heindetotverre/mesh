@@ -12,6 +12,7 @@
     "email": "email not valid",
     "password": "password not valid",
     "nonumber": "no numbers allowed",
+    "issamevalue": "must be same value",
     "default": "standard validation message"
   },
   "messages": {

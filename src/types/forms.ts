@@ -22,8 +22,9 @@ interface FormField {
   label?: string,
   name: string,
   options?: string[],
-  type: string,
   required?: boolean,
+  secondValidationValue?: string,
+  type: string,
   validators: Validator[],
   variant?: string,
   visible?: boolean
@@ -45,7 +46,7 @@ interface ValidationResult {
 }
 
 interface Validator {
-  (input: string | number | boolean | unknown | Record<string, any>): boolean
+  (input: string | number | boolean | unknown | Record<string, any>, secondInput?: string): boolean
 }
 
 export type {

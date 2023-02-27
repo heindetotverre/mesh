@@ -4,6 +4,7 @@ import formMock from '../mocks/forms.json'
 import contentMock from '../mocks/content.json'
 import { email } from '../mocks/email'
 import { nonumber } from '../mocks/nonumbers'
+import { issamevalue } from '../mocks/notsamevalue'
 
 const content = (type, key) => contentMock[type]?.[key]
 
@@ -12,6 +13,12 @@ const getForm = (formKey, errorState) => {
   form.fields.forEach(field => {
     if (errorState && field.key === 'email') {
       field.validators = [email, nonumber]
+    }
+    if (errorState && field.key === 'password') {
+      field.validators = [nonumber]
+    }
+    if (errorState && field.key === 'passwordCheck') {
+      field.validators = [issamevalue, nonumber]
     }
     if (errorState && (field.key === 'firstName' || field.key === 'lastName')) {
       field.validators = [nonumber]
@@ -82,4 +89,10 @@ Filled.args = {
     lastName: 'McTestFace',
     email: 'nonumberemail@validator.test'
   }
+};
+
+export const PasswordCheck = Template.bind({});
+PasswordCheck.args = {
+  form: getForm('passwordCheck', true),
+  content: content
 };
