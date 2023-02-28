@@ -91,7 +91,6 @@
   }
 
   const validate = ({ clearLooseValidation, clearStrictValidation, validateLoose, validateStrict } : ValidationConfig) => {
-    console.log(currentValue.value)
     if (clearStrictValidation) {
         validationResult.value.messages = []
         validationResult.value.canSubmit = false;
