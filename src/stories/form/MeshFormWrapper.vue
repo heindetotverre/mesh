@@ -52,7 +52,6 @@ import { computed, PropType } from 'vue'
 import MeshButton from '../button/MeshButton.vue';
 import MeshForm from './MeshForm.vue'
 import MeshInput from '../input/MeshInput.vue';
-import shareableEmits from "../shareableEmits"
 import { Content, Form, ValidationConfig } from '../../types/forms'
 
   const props = defineProps({

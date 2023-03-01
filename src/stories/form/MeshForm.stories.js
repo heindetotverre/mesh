@@ -40,7 +40,8 @@ const Template = (args) => ({
     const forceValidation = ref({})
 
     const onSubmit = (payload) => {
-      console.log(payload)
+      formValues.value = {}
+      formValues.value.firstName = payload.formValues.firstName
     }
 
     const clearForm = () => {

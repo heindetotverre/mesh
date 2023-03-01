@@ -77,8 +77,8 @@ import { Content, ValidationConfig, ValidationResult } from '../../types/forms'
 
   const onSubmit = () => {
     if (canSubmit.value) {
-      emit('submit', { formName: props.name, formValues } )
-      validationStrict.value = []
+      emit('submit', { formName: props.name, formValues: {...formValues.value} } )
+      forceValidation.value = {}
     }
   }
 
