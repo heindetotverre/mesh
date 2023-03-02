@@ -40,8 +40,8 @@ const Template = (args) => ({
     const forceValidation = ref({})
 
     const onSubmit = (payload) => {
-      formValues.value = {}
-      formValues.value.firstName = payload.formValues.firstName
+      formValues.value = payload.formValues
+      formValues.value.email = ''
     }
 
     const clearForm = () => {
@@ -95,5 +95,8 @@ Filled.args = {
 export const PasswordCheck = Template.bind({});
 PasswordCheck.args = {
   form: getForm('passwordCheck', true),
-  content: content
+  content: content,
+  formValues: {
+    email: 'test@test.nl'
+  }
 };

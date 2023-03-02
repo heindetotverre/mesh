@@ -2,7 +2,7 @@
   "name": "mesh-ui-components",
   "description": "UI Component library",
   "private": false,
-  "version": "0.2.15",
+  "version": "0.2.17",
   "type": "module",
   "files": [
     "dist"
