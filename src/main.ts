@@ -21,6 +21,7 @@ export default {
   }
 };
 export { MeshButton, MeshInput, MeshForm, MeshFormWrapper };
+export * as validators from './validators/index';
 export type { 
   Content,
   Form,

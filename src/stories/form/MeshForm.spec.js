@@ -52,7 +52,7 @@ describe('MeshForm', () => {
 
     expect(wrapper.emitted('submit')).toBeTruthy();
     expect(wrapper.emitted('submit')[0][0].formName).toBe('test form');
-    expect(wrapper.emitted('submit')[0][0].formValues.value).toEqual({ field1: 'test value' });
+    expect(wrapper.emitted('submit')[0][0].formValues).toEqual({ field1: 'test value' });
   });
 
   it('validates form fields and enables/disables submit button based on validation', async () => {

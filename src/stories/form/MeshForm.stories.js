@@ -2,9 +2,9 @@ import { ref } from 'vue'
 import FormWrapper from './MeshFormWrapper.vue'
 import formMock from '../mocks/forms.json'
 import contentMock from '../mocks/content.json'
-import { email } from '../mocks/email'
-import { nonumber } from '../mocks/nonumbers'
-import { issamevalue } from '../mocks/notsamevalue'
+import { email } from '../../validators/email'
+import { nonumber } from '../../validators/nonumbers'
+import { issamevalue } from '../../validators/issamevalue'
 
 const content = (type, key) => contentMock[type]?.[key]
 
