@@ -5,8 +5,7 @@ interface Content {
 interface Form {
   meta: {
     name: string,
-    multipart: boolean,
-    parts?: string[]
+    sections: string[]
   },
   fields: FormField[]
 }
@@ -24,6 +23,7 @@ interface FormField {
   options?: string[],
   required?: boolean,
   secondValidationValue?: string,
+  section?: string,
   type: string,
   validators: Validator[],
   variant?: string,
