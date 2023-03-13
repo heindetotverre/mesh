@@ -17,6 +17,7 @@
         :highlight-validation="field.highlightValidation"
         :label="content('labels', field.key)"
         :name="field.key"
+        :options="field.options"
         :required="field.required"
         :second-validation-value="getSecondValdiationValue(field.secondValidationValue)"
         :type="field.type"

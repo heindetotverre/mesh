@@ -1,6 +1,7 @@
 import type { App } from 'vue';
 import MeshButton from './stories/button/MeshButton.vue';
 import MeshInput from './stories/input/MeshInput.vue';
+import MeshSelect from './stories/select/MeshSelect.vue';
 import MeshFormWrapper from './stories/form/MeshFormWrapper.vue';
 import MeshForm from './stories/form/MeshForm.vue';
 import {
@@ -18,10 +19,11 @@ export default {
     app.component('MeshButton', MeshButton);
     app.component('MeshInput', MeshInput);
     app.component('MeshForm', MeshForm);
+    app.component('MeshSelect', MeshSelect);
     app.component('MeshFormWrapper', MeshFormWrapper);
   }
 };
-export { MeshButton, MeshInput, MeshForm, MeshFormWrapper, useValidation };
+export { MeshButton, MeshInput, MeshSelect, MeshForm, MeshFormWrapper, useValidation };
 export * as validators from './validators/index';
 export type { 
   Content,

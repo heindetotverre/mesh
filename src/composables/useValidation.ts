@@ -6,7 +6,7 @@ export const useValidation = (
     currentValue : Ref,
     fieldValidators : Validator[],
     isRequired: boolean,
-    optionalSecondValidation : any
+    optionalSecondValidation? : any
   },
   emit : Function
 ) => {

@@ -13,10 +13,6 @@ export default {
     disabled: {
       type: { name: 'boolean', required: false },
       control: { type: 'boolean' }
-    },
-    validationResult: {
-      type: { name: 'boolean', required: false },
-      control: { type: 'boolean' }
     }
   }
 }
@@ -30,7 +26,20 @@ const Template = (args) => ({
 
     return { args, inputValue, updateModel, error }
   },
-  template: '<MeshInput v-bind="args" :modelValue="inputValue" @update:modelValue="updateModel"><template #label>{{ args.label }}</template><template #error-message>{{ error }}</template></MeshInput><p>input value: {{ inputValue }}</p>'
+  template: `
+  <MeshInput
+    v-bind="args"
+    :modelValue="inputValue"
+    @update:modelValue="updateModel"
+  >
+    <template #label>
+      {{ args.label }}
+    </template>
+    <template #error-message>
+      {{ error }}
+    </template>
+  </MeshInput>
+  <p>input value: {{ inputValue }}</p>`
 })
 
 export const Text = Template.bind({})

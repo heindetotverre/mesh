@@ -25,7 +25,10 @@ const getForm = (formKey, errorState) => {
         field.validators = [nonumber]
       }
       if (field.key === 'checkBox') {
-        field.validators = [{ name: '', validate: () => true }]
+        field.validators = [{ name: 'checkbox', validate: () => true }]
+      }
+      if (field.key === 'select') {
+        field.validators = [{ name: 'select', validate: () => true }]
       }
     }
   })
@@ -109,5 +112,11 @@ PasswordCheck.args = {
 export const CheckBox = Template.bind({});
 CheckBox.args = {
   form: getForm('checkBox', true),
+  content: content
+};
+
+export const Select = Template.bind({});
+Select.args = {
+  form: getForm('select', true),
   content: content
 };

@@ -19,6 +19,9 @@ export default defineConfig({
           sourceMap: true,
           declaration: true,
           declarationMap: true,
+          types: [
+            "vite/client",
+          ]
         },
       },
       exclude: ["vite.config.ts"]
