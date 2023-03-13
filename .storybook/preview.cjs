@@ -1,9 +1,7 @@
 import { app } from '@storybook/vue3';
-import MeshTextInput from '../src/stories/input/MeshTextInput.vue'
-import MeshCheckboxInput from '../src/stories/input/MeshCheckboxInput.vue'
+import MeshInput from '../src/stories/input/MeshInput.vue'
 
-app.component('MeshTextInput', MeshTextInput);
-app.component('MeshCheckboxInput', MeshCheckboxInput);
+app.component('MeshInput', MeshInput);
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },

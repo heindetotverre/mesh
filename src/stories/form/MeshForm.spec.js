@@ -1,14 +1,15 @@
 import { mount } from '@vue/test-utils';
 import { it, describe, expect } from 'vitest';
 import MeshFormWrapper from './MeshFormWrapper.vue';
+import MeshInput from '../input/MeshInput.vue'
 
 describe('MeshForm', () => {
   it('renders all form fields and buttons', () => {
     const form = {
       meta: { name: 'test form' },
       fields: [
-        { key: 'field1', component: 'MeshTextInput', type: 'text' },
-        { key: 'field2', component: 'MeshTextInput', type: 'email' },
+        { key: 'field1', component: 'MeshInput', type: 'text' },
+        { key: 'field2', component: 'MeshInput', type: 'email' },
         { key: 'button1', component: 'MeshButton', type: 'button' },
         { key: 'button2', component: 'MeshButton', type: 'submit' },
       ],
@@ -29,7 +30,7 @@ describe('MeshForm', () => {
     const form = {
       meta: { name: 'test form' },
       fields: [
-        { key: 'field1', component: 'MeshTextInput', type: 'text' },
+        { key: 'field1', component: 'MeshInput', type: 'text' },
         { key: 'button1', component: 'MeshButton', type: 'submit' },
       ],
     };
@@ -44,7 +45,7 @@ describe('MeshForm', () => {
       },
     });
 
-    const inputField = wrapper.findComponent({ name: 'MeshTextInput' });
+    const inputField = wrapper.findComponent(MeshInput);
     const submitButton = wrapper.findComponent({ name: 'MeshButton' });
 
     await inputField.vm.$emit('validate', { showMessage: false, canSubmit: true });
@@ -59,7 +60,7 @@ describe('MeshForm', () => {
     const form = {
       meta: { name: 'test form' },
       fields: [
-        { key: 'field1', component: 'MeshTextInput', type: 'text', required: true },
+        { key: 'field1', component: 'MeshInput', type: 'text', required: true },
         { key: 'button1', component: 'MeshButton', type: 'submit' },
       ],
     };
@@ -72,7 +73,7 @@ describe('MeshForm', () => {
     });
 
     const submitButton = wrapper.findComponent({ name: 'MeshButton' });
-    const inputField = wrapper.findComponent({ name: 'MeshTextInput' });
+    const inputField = wrapper.findComponent({ name: 'MeshInput' });
 
     expect(submitButton.props('disabled')).toBe(true);
 

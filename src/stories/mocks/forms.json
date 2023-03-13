@@ -7,14 +7,14 @@
       },
       "fields":[
         { 
-          "component":"MeshTextInput",
+          "component":"MeshInput",
           "type":"email",
           "id":"0",
           "key": "email",
           "highlightValidation": true
         },
         {
-          "component": "MeshTextInput",
+          "component": "MeshInput",
           "type":"password",
           "id":"1",
           "key":"password",
@@ -35,7 +35,7 @@
       },
       "fields":[
         { 
-          "component":"MeshTextInput",
+          "component":"MeshInput",
           "type":"text",
           "id":"0",
           "key": "firstName",
@@ -43,7 +43,7 @@
           "highlightValidation": true
         },
         {
-          "component": "MeshTextInput",
+          "component": "MeshInput",
           "type":"text",
           "id":"1",
           "key":"lastName",
@@ -51,7 +51,7 @@
           "highlightValidation": true
         },
         {
-          "component": "MeshTextInput",
+          "component": "MeshInput",
           "type":"email",
           "id":"2",
           "key":"email",
@@ -73,7 +73,7 @@
       },
       "fields":[
         {
-          "component": "MeshTextInput",
+          "component": "MeshInput",
           "type":"email",
           "id":"2",
           "key":"email",
@@ -81,14 +81,14 @@
           "highlightValidation": true
         },
         {
-          "component": "MeshTextInput",
+          "component": "MeshInput",
           "type":"password",
           "id":"1",
           "key":"password",
           "highlightValidation": true
         },
         {
-          "component": "MeshTextInput",
+          "component": "MeshInput",
           "type":"password",
           "id":"1",
           "key":"passwordCheck",
@@ -110,7 +110,7 @@
       },
       "fields":[
         { 
-          "component":"MeshTextInput",
+          "component":"MeshInput",
           "autocomplete": "on",
           "type":"text",
           "id":"0",
@@ -119,7 +119,7 @@
           "highlightValidation": true
         },
         { 
-          "component":"MeshTextInput",
+          "component":"MeshInput",
           "type":"text",
           "id":"1",
           "key": "lastName",
@@ -127,7 +127,7 @@
           "highlightValidation": true
         },
         { 
-          "component":"MeshCheckboxInput",
+          "component":"MeshInput",
           "type":"checkbox",
           "id":"2",
           "key": "checkBox",

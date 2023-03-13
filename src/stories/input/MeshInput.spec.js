@@ -1,11 +1,11 @@
 import { mount } from '@vue/test-utils'
 import { it, describe, expect } from 'vitest';
 import { nonumber } from '../mocks/nonumbers';
-import MeshTextInput from './MeshTextInput.vue'
+import MeshInput from './MeshInput.vue'
 
 describe('Input', () => {
   it('emits an "update:modelValue" event when input is changed', async () => {
-    const wrapper = mount(MeshTextInput, {
+    const wrapper = mount(MeshInput, {
       props: {
         id: '1',
         name: 'input',
@@ -19,13 +19,13 @@ describe('Input', () => {
   })
 
   it('shows validation error message when input is invalid and focus is lost', async () => {
-    const wrapper = mount(MeshTextInput, {
+    const wrapper = mount(MeshInput, {
       props: {
         id: '1',
         name: 'input',
         modelValue: '99',
         required: true,
-        validators: [(value) => nonumber(value)],
+        validators: [{ name: '', validate: (value) => nonumber(value) }],
       },
     })
     const input = wrapper.find('input')
@@ -35,13 +35,13 @@ describe('Input', () => {
   })
 
   it('hides validation error message when input is valid and focus is lost', async () => {
-    const wrapper = mount(MeshTextInput, {
+    const wrapper = mount(MeshInput, {
       props: {
         id: '1',
         name: 'input',
         modelValue: 'valid value',
         required: true,
-        validation: [(value) => value.length > 0],
+        validators: [{ name: '', validate: (value) => value.length > 0 }],
       },
     })
     const input = wrapper.find('input')

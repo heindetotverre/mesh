@@ -11,43 +11,43 @@ import {
 
 describe('validators: utils/validators', () => {
   it('should validate nonumber', () => {
-    expect(nonumber('11')).toBe(false)
-    expect(nonumber('foo')).toBe(true)
+    expect(nonumber.validate('11')).toBe(false)
+    expect(nonumber.validate('foo')).toBe(true)
   })
 
   it('should validate email', () => {
-    expect(email('11')).toBe(false)
-    expect(email('foo@bar.test')).toBe(true)
+    expect(email.validate('11')).toBe(false)
+    expect(email.validate('foo@bar.test')).toBe(true)
   })
 
   it('should validate notempty', () => {
-    expect(notempty([])).toBe(false)
-    expect(notempty({})).toBe(false)
-    expect(notempty('')).toBe(false)
-    expect(notempty(['foo', 'bar'])).toBe(true)
-    expect(notempty({ foo: 'bar' })).toBe(true)
-    expect(notempty('bar')).toBe(true)
-    expect(notempty(0)).toBe(true)
-    expect(notempty(1)).toBe(true)
+    expect(notempty.validate([])).toBe(false)
+    expect(notempty.validate({})).toBe(false)
+    expect(notempty.validate('')).toBe(false)
+    expect(notempty.validate(['foo', 'bar'])).toBe(true)
+    expect(notempty.validate({ foo: 'bar' })).toBe(true)
+    expect(notempty.validate('bar')).toBe(true)
+    expect(notempty.validate(0)).toBe(true)
+    expect(notempty.validate(1)).toBe(true)
   })
 
   it('should validate specialchar', () => {
-    expect(specialchar('foo')).toBe(false)
-    expect(specialchar('b@r')).toBe(true)
+    expect(specialchar.validate('foo')).toBe(false)
+    expect(specialchar.validate('b@r')).toBe(true)
   })
   
   it('should validate minlength', () => {
-    expect(minlength('foo')).toBe(false)
-    expect(minlength('foobarfoo')).toBe(true)
+    expect(minlength.validate('foo')).toBe(false)
+    expect(minlength.validate('foobarfoo')).toBe(true)
   })
 
   it('should validate issamevalue', () => {
-    expect(issamevalue('foo', 'bar')).toBe(false)
-    expect(issamevalue('foo', 'foo')).toBe(true)
+    expect(issamevalue.validate('foo', 'bar')).toBe(false)
+    expect(issamevalue.validate('foo', 'foo')).toBe(true)
   })
 
   it('should validate slug', () => {
-    expect(slug('foobar')).toBe(false)
-    expect(slug('/foobar')).toBe(true)
+    expect(slug.validate('foobar')).toBe(false)
+    expect(slug.validate('/foobar')).toBe(true)
   })
 })
