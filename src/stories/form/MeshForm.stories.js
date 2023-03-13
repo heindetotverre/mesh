@@ -25,7 +25,7 @@ const getForm = (formKey, errorState) => {
         field.validators = [nonumber]
       }
       if (field.key === 'checkBox') {
-        field.validators = [() => true]
+        field.validators = [{ name: '', validate: () => true }]
       }
     }
   })

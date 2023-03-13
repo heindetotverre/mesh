@@ -57,7 +57,6 @@
     {
       currentValue: currentValue,
       fieldValidators: props.validators,
-      fieldName: props.name || 'default',
       isRequired: props.required,
       optionalSecondValidation: props.secondValidationValue
     },

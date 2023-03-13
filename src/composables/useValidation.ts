@@ -1,17 +1,16 @@
-import { computed, ref, Ref, onMounted } from "vue"
-import { ValidationConfig } from "@/main"
+import { ref, Ref, onMounted } from "vue"
+import { ValidationConfig, Validator } from "@/main"
 
 export const useValidation = (
   config: {
     currentValue : Ref,
-    fieldValidators : Function[],
-    fieldName: string,
+    fieldValidators : Validator[],
     isRequired: boolean,
     optionalSecondValidation : any
   },
   emit : Function
 ) => {
-  const { currentValue, fieldValidators, fieldName, isRequired, optionalSecondValidation } = config
+  const { currentValue, fieldValidators, isRequired, optionalSecondValidation } = config
 
   onMounted(() => {
     validate({ validateLoose: true })
@@ -20,12 +19,12 @@ export const useValidation = (
   const getValidationResults = ({ validateStrict, validateLoose } : ValidationConfig) : { key : string }[] => {
     return fieldValidators.reduce((acc : { key : string }[], curr) => {
       const meta = {
-        key: fieldName
+        key: curr.name
       }
-      if (validateStrict && !curr(currentValue.value, optionalSecondValidation)) {
+      if (validateStrict && !curr.validate(currentValue.value, optionalSecondValidation)) {
         return [...acc, meta]
       }
-      if (validateLoose && !!(currentValue.value && !curr(currentValue.value, optionalSecondValidation))) {
+      if (validateLoose && !!(currentValue.value && !curr.validate(currentValue.value, optionalSecondValidation))) {
         return [...acc, meta]
       }
       return acc

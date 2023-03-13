@@ -46,6 +46,11 @@ interface ValidationResult {
 }
 
 interface Validator {
+  name: string,
+  validate: ValidatorFunction
+}
+
+interface ValidatorFunction {
   (input: string | number | boolean | unknown | Record<string, any>, secondInput?: string): boolean
 }
 

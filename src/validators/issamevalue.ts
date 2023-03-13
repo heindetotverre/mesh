@@ -1,3 +1,4 @@
-export const issamevalue = (input : string, secondInput :string) => {
-  return input && secondInput ? input === secondInput : false
+export const issamevalue = {
+  name: 'issamevalue',
+  validate: (input : string, secondInput :string) => input && secondInput ? input === secondInput : false
 }

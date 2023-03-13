@@ -1,3 +1,4 @@
-export const minlength = (input: string) => {
-  return input.length >= 8
+export const minlength = {
+  name: 'minlength',
+  validate: (input: string) => input.length >= 8
 }

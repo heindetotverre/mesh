@@ -1,3 +1,4 @@
-export const novalidator = (input: string) => {
-  return true
+export const novalidator = {
+  name: 'novalidator',
+  validate: (input: string) => true
 }
