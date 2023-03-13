@@ -11,17 +11,22 @@ const content = (type, key) => contentMock[type]?.[key]
 const getForm = (formKey, errorState) => {
   const form = formMock.forms[formKey]
   form.fields.forEach(field => {
-    if (errorState && field.key === 'email') {
-      field.validators = [email, nonumber]
-    }
-    if (errorState && field.key === 'password') {
-      field.validators = [nonumber]
-    }
-    if (errorState && field.key === 'passwordCheck') {
-      field.validators = [issamevalue, nonumber]
-    }
-    if (errorState && (field.key === 'firstName' || field.key === 'lastName')) {
-      field.validators = [nonumber]
+    if (errorState) {
+      if (field.key === 'email') {
+        field.validators = [email, nonumber]
+      }
+      if (field.key === 'password') {
+        field.validators = [nonumber]
+      }
+      if (field.key === 'passwordCheck') {
+        field.validators = [issamevalue, nonumber]
+      }
+      if (field.key === 'firstName' || field.key === 'lastName') {
+        field.validators = [nonumber]
+      }
+      if (field.key === 'checkBox') {
+        field.validators = [() => true]
+      }
     }
   })
   return form
@@ -99,4 +104,10 @@ PasswordCheck.args = {
   formValues: {
     email: 'test@test.nl'
   }
+};
+
+export const CheckBox = Template.bind({});
+CheckBox.args = {
+  form: getForm('checkBox', true),
+  content: content
 };

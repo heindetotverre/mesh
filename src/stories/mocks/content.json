@@ -6,7 +6,8 @@
     "firstName": "First name",
     "lastName": "Last name",
     "loginButton": "Login",
-    "registerButton": "Register"
+    "registerButton": "Register",
+    "formButton": "Submit"
   },
   "validators": {
     "email": "email not valid",

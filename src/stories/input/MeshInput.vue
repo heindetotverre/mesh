@@ -29,7 +29,7 @@
   import { computed, onMounted, ref, watch } from "vue";
   import shareableProps from "../shareableProps"
   import shareableEmits from "../shareableEmits"
-  import { ValidationConfig } from "@/types/forms";
+  import { useValidation } from '../../composables/useValidation'
 
   const props = defineProps({
     ...shareableProps,
@@ -41,7 +41,6 @@
   const emit = defineEmits(shareableEmits)
 
   const focus = ref(false)
-  const validationResult = ref<{messages: { key : string }[], canSubmit: boolean}>({messages: [], canSubmit: false})
 
   const classes = computed(() => [
     ...props.domclass,
@@ -53,16 +52,22 @@
     get: () => props.modelValue, 
     set: (value) => [emit('update:modelValue', value), validate({})]
   })
-  const isValid = computed(() => !!(props.required && currentValue.value && !getValidatedMeta({ validateStrict: true }).length))
+
+  const { validate, validationResult } = useValidation(
+    {
+      currentValue: currentValue,
+      fieldValidators: props.validators,
+      fieldName: props.name || 'default',
+      isRequired: props.required,
+      optionalSecondValidation: props.secondValidationValue
+    },
+    emit
+  )
 
   watch(() => props.forceValidation, (newVal) => {
     if (newVal) {
       validate(newVal)
     }
-  })
-
-  onMounted(() => {
-    validate({ validateLoose: true })
   })
 
   const onBlur = () => {
@@ -75,39 +80,6 @@
     validate({ clearLooseValidation: true })
   }
 
-  const getValidatedMeta = ({ validateStrict, validateLoose } : ValidationConfig) : { key : string }[] => {
-    return props.validators.reduce((acc : { key : string }[], curr) => {
-      const meta = {
-        key: curr.name
-      }
-      if (validateStrict && !curr(currentValue.value, props.secondValidationValue)) {
-        return [...acc, meta]
-      }
-      if (validateLoose && !!(currentValue.value && !curr(currentValue.value, props.secondValidationValue))) {
-        return [...acc, meta]
-      }
-      return acc
-    }, [])
-  }
-
-  const validate = ({ clearLooseValidation, clearStrictValidation, validateLoose, validateStrict } : ValidationConfig) => {
-    if (clearStrictValidation) {
-        validationResult.value.messages = []
-        validationResult.value.canSubmit = false;
-        return
-    }
-    if (clearLooseValidation) {
-      validationResult.value.messages = []
-    }
-    if (validateStrict) {
-      validationResult.value.messages = getValidatedMeta({ validateStrict })
-    }
-    if (validateLoose) {
-      validationResult.value.messages = getValidatedMeta({ validateLoose })
-    }
-    validationResult.value.canSubmit = isValid.value
-    emit('validate', validationResult.value)
-  }
 </script>
 <style lang="scss" scoped>
 @import "../../assets/variables.scss";
