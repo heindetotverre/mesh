@@ -5,6 +5,7 @@
     "passwordCheck": "Password again",
     "firstName": "First name",
     "lastName": "Last name",
+    "checkBox": "Checkbox",
     "loginButton": "Login",
     "registerButton": "Register",
     "formButton": "Submit"

@@ -7,8 +7,8 @@ describe('MeshForm', () => {
     const form = {
       meta: { name: 'test form' },
       fields: [
-        { key: 'field1', component: 'MeshInput', type: 'text' },
-        { key: 'field2', component: 'MeshInput', type: 'email' },
+        { key: 'field1', component: 'MeshTextInput', type: 'text' },
+        { key: 'field2', component: 'MeshTextInput', type: 'email' },
         { key: 'button1', component: 'MeshButton', type: 'button' },
         { key: 'button2', component: 'MeshButton', type: 'submit' },
       ],
@@ -29,7 +29,7 @@ describe('MeshForm', () => {
     const form = {
       meta: { name: 'test form' },
       fields: [
-        { key: 'field1', component: 'MeshInput', type: 'text' },
+        { key: 'field1', component: 'MeshTextInput', type: 'text' },
         { key: 'button1', component: 'MeshButton', type: 'submit' },
       ],
     };
@@ -44,7 +44,7 @@ describe('MeshForm', () => {
       },
     });
 
-    const inputField = wrapper.findComponent({ name: 'MeshInput' });
+    const inputField = wrapper.findComponent({ name: 'MeshTextInput' });
     const submitButton = wrapper.findComponent({ name: 'MeshButton' });
 
     await inputField.vm.$emit('validate', { showMessage: false, canSubmit: true });
@@ -59,7 +59,7 @@ describe('MeshForm', () => {
     const form = {
       meta: { name: 'test form' },
       fields: [
-        { key: 'field1', component: 'MeshInput', type: 'text', required: true },
+        { key: 'field1', component: 'MeshTextInput', type: 'text', required: true },
         { key: 'button1', component: 'MeshButton', type: 'submit' },
       ],
     };
@@ -72,7 +72,7 @@ describe('MeshForm', () => {
     });
 
     const submitButton = wrapper.findComponent({ name: 'MeshButton' });
-    const inputField = wrapper.findComponent({ name: 'MeshInput' });
+    const inputField = wrapper.findComponent({ name: 'MeshTextInput' });
 
     expect(submitButton.props('disabled')).toBe(true);
 

@@ -1,9 +1,9 @@
-import MeshInput from './MeshInput.vue'
+import MeshTextInput from './MeshTextInput.vue'
 import { ref } from 'vue'
 
 export default {
   title: 'Components/Input',
-  component: MeshInput,
+  component: MeshTextInput,
   argTypes: {
     type: {
       type: { name: 'string', required: false },
@@ -22,7 +22,7 @@ export default {
 }
 
 const Template = (args) => ({
-  components: { MeshInput },
+  components: { MeshTextInput },
   setup() {
     const inputValue = ref('test')
     const updateModel = (event) => inputValue.value = event
@@ -30,7 +30,7 @@ const Template = (args) => ({
 
     return { args, inputValue, updateModel, error }
   },
-  template: '<MeshInput v-bind="args" :modelValue="inputValue" @update:modelValue="updateModel"><template #label>{{ args.label }}</template><template #error-message>{{ error }}</template></UiInput><p>input value: {{ inputValue }}</p>'
+  template: '<MeshTextInput v-bind="args" :modelValue="inputValue" @update:modelValue="updateModel"><template #label>{{ args.label }}</template><template #error-message>{{ error }}</template></MeshTextInput><p>input value: {{ inputValue }}</p>'
 })
 
 export const Text = Template.bind({})

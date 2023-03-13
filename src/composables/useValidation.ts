@@ -17,7 +17,7 @@ export const useValidation = (
     validate({ validateLoose: true })
   })
   
-  const getValidatedMeta = ({ validateStrict, validateLoose } : ValidationConfig) : { key : string }[] => {
+  const getValidationResults = ({ validateStrict, validateLoose } : ValidationConfig) : { key : string }[] => {
     return fieldValidators.reduce((acc : { key : string }[], curr) => {
       const meta = {
         key: fieldName
@@ -32,7 +32,12 @@ export const useValidation = (
     }, [])
   }
 
-  const isValid = computed(() => !!(isRequired && currentValue.value && !getValidatedMeta({ validateStrict: true }).length))
+  const isValid = () => {
+    if (isRequired) {
+      return currentValue.value && !getValidationResults({ validateStrict: true }).length
+    }
+    return (!getValidationResults({ validateStrict: true }).length)
+  }
 
   const validate = ({ clearLooseValidation, clearStrictValidation, validateLoose, validateStrict } : ValidationConfig) => {
     if (clearStrictValidation) {
@@ -44,12 +49,12 @@ export const useValidation = (
       validationResult.value.messages = []
     }
     if (validateStrict) {
-      validationResult.value.messages = getValidatedMeta({ validateStrict })
+      validationResult.value.messages = getValidationResults({ validateStrict })
     }
     if (validateLoose) {
-      validationResult.value.messages = getValidatedMeta({ validateLoose })
+      validationResult.value.messages = getValidationResults({ validateLoose })
     }
-    validationResult.value.canSubmit = isValid.value
+    validationResult.value.canSubmit = isValid()
     emit('validate', validationResult.value)
   }
 

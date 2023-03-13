@@ -8,7 +8,7 @@
     @submit="onSubmit"
   >
     <template #fields="{ forceValidation, formValues, getSecondValdiationValue, onValidate, validationMessages }">
-      <MeshInput
+      <component
         v-for="field of formFields"
         :id="`${field.key}_${field.id}`"
         :is="field.component"
@@ -28,7 +28,7 @@
         <template #error-message>
           <p v-for="{ key } of validationMessages(field.key)">{{ content('validators', key) || content('validators', 'default') }}</p>
         </template>
-      </MeshInput>
+      </component>
     </template>
     <template #error>{{ content('messages', 'global-validation-message') }}</template>
     <template #buttons="{ canSubmit, updateFormState }">
@@ -51,7 +51,6 @@
 import { computed, PropType } from 'vue'
 import MeshButton from '../button/MeshButton.vue';
 import MeshForm from './MeshForm.vue'
-import MeshInput from '../input/MeshInput.vue';
 import { Content, Form, ValidationConfig } from '../../types/forms'
 
   const props = defineProps({
@@ -84,7 +83,7 @@ import { Content, Form, ValidationConfig } from '../../types/forms'
     set: (value) => emit('update:formValues', value) 
   })
   const formButtons = computed(() => props.form.fields.filter(field => field.component === 'MeshButton'))
-  const formFields = computed(() => props.form.fields.filter(field => field.component === 'MeshInput'))
+  const formFields = computed(() => props.form.fields.filter(field => field.component !== 'MeshButton'))
 
   const onSubmit = (event : Record<string, any>) => {
     emit('submit', event)

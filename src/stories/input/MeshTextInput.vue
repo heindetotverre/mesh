@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted, ref, watch } from "vue";
+  import { computed, ref, watch } from "vue";
   import shareableProps from "../shareableProps"
   import shareableEmits from "../shareableEmits"
   import { useValidation } from '../../composables/useValidation'

@@ -1,11 +1,11 @@
 import { mount } from '@vue/test-utils'
 import { it, describe, expect } from 'vitest';
 import { nonumber } from '../mocks/nonumbers';
-import MeshInput from './MeshInput.vue'
+import MeshTextInput from './MeshTextInput.vue'
 
 describe('Input', () => {
   it('emits an "update:modelValue" event when input is changed', async () => {
-    const wrapper = mount(MeshInput, {
+    const wrapper = mount(MeshTextInput, {
       props: {
         id: '1',
         name: 'input',
@@ -19,7 +19,7 @@ describe('Input', () => {
   })
 
   it('shows validation error message when input is invalid and focus is lost', async () => {
-    const wrapper = mount(MeshInput, {
+    const wrapper = mount(MeshTextInput, {
       props: {
         id: '1',
         name: 'input',
@@ -35,7 +35,7 @@ describe('Input', () => {
   })
 
   it('hides validation error message when input is valid and focus is lost', async () => {
-    const wrapper = mount(MeshInput, {
+    const wrapper = mount(MeshTextInput, {
       props: {
         id: '1',
         name: 'input',
