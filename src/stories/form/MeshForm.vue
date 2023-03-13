@@ -4,7 +4,6 @@
   >
     <div
       v-if="$slots.fields"
-      ref="fieldElements"
     >
       <slot
         name="fields"
@@ -57,7 +56,6 @@ import { Content, ValidationConfig, ValidationResult } from '../../types/forms'
     'update:forceValidation'
   ])
 
-  const fieldElements = ref()
   const forceValidation = ref<ValidationConfig>({})
   const validationStrict = ref<ValidationResult[]>([])
   const validationLoose = ref<ValidationResult[]>([])
@@ -66,14 +64,12 @@ import { Content, ValidationConfig, ValidationResult } from '../../types/forms'
     get: () => props.formValues, 
     set: (value) => emit('update:formValues', value)
   })
-  const canSubmit = computed(() => validationStrict.value.length === fieldElements.value?.children.length)
+  const canSubmit = computed(() => !validationStrict.value.find(field => !field.canSubmit))
 
   watch(() => props.name, () => updateFormState({ clearForm : true, clearStrictValidation : true }))
   watch(() => props.forceValidation, (newValue) => updateFormState(newValue))
 
-  const getSecondValdiationValue = (key : string | undefined) => {
-    return key ? formValues.value[key] : ''
-  }
+  const getSecondValdiationValue = (key : string | undefined) => key ? formValues.value[key] : ''
 
   const onSubmit = () => {
     if (canSubmit.value) {
@@ -83,12 +79,11 @@ import { Content, ValidationConfig, ValidationResult } from '../../types/forms'
   }
 
   const onValidate = (field : string, { messages, canSubmit } : ValidationResult) => {
-    if (canSubmit) {
-      if (!validationStrict.value.find(validationResult => validationResult.field === field)) {
-        validationStrict.value.push({ field, canSubmit })
-      }
+    const duplicateIndex = validationStrict.value.findIndex(strict => strict.field === field)
+    if (duplicateIndex >= 0) {
+      validationStrict.value[duplicateIndex] = { field, canSubmit }
     } else {
-      validationStrict.value = validationStrict.value.filter(validationResult => validationResult.field !== field)
+      validationStrict.value.push({ field, canSubmit })
     }
     if (messages?.length) {
       if (!validationLoose.value.find(validationResult => validationResult.field === field)) {
