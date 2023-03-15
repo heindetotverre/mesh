@@ -5,6 +5,7 @@ import { specialchar } from "./specialchar"
 import { minlength } from "./minlength"
 import { issamevalue } from './issamevalue'
 import { slug } from "./slug"
+import { novalidator } from "./novalidator"
 
 export {
   email,
@@ -13,5 +14,6 @@ export {
   specialchar,
   minlength,
   issamevalue,
-  slug
+  slug,
+  novalidator
 }

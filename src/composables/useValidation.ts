@@ -6,7 +6,7 @@ export const useValidation = (
     currentValue : Ref,
     fieldValidators : Validator[],
     isRequired: boolean,
-    optionalSecondValidation? : any
+    optionalSecondValidation? : Ref
   },
   emit : Function
 ) => {
@@ -21,10 +21,10 @@ export const useValidation = (
       const meta = {
         key: curr.name
       }
-      if (validateStrict && !curr.validate(currentValue.value, optionalSecondValidation)) {
+      if (validateStrict && !curr.validate(currentValue.value, optionalSecondValidation?.value)) {
         return [...acc, meta]
       }
-      if (validateLoose && !!(currentValue.value && !curr.validate(currentValue.value, optionalSecondValidation))) {
+      if (validateLoose && !!(currentValue.value && !curr.validate(currentValue.value, optionalSecondValidation?.value))) {
         return [...acc, meta]
       }
       return acc

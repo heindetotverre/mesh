@@ -52,13 +52,14 @@
     get: () => props.modelValue, 
     set: (value) => [emit('update:modelValue', value), validate({})]
   })
+  const secondValidationValue = computed(() => props.secondValidationValue)
 
   const { validate, validationResult } = useValidation(
     {
       currentValue: currentValue,
       fieldValidators: props.validators,
       isRequired: props.required,
-      optionalSecondValidation: props.secondValidationValue
+      optionalSecondValidation: secondValidationValue
     },
     emit
   )

@@ -51,7 +51,7 @@ interface Validator {
 }
 
 interface ValidatorFunction {
-  (input: string | number | boolean | unknown | Record<string, any>, secondInput?: string): boolean
+  (input: any, secondInput?: any): boolean
 }
 
 export type {

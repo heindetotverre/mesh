@@ -173,8 +173,7 @@
             "one",
             "two",
             "three"
-          ],
-          "required": true
+          ]
         },
         {
           "component":"MeshButton",

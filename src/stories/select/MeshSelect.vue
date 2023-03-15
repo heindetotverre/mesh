@@ -84,6 +84,7 @@ import { useValidation } from '../../composables/useValidation'
 select {
   border-color: $color-grey-normal;
   border-style: solid;
+  border-width: 2px;
   display: block;
   outline: none;
   padding: calc(.5 * $margin) $margin;
