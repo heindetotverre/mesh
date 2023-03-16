@@ -5,6 +5,7 @@ import contentMock from '../mocks/content.json'
 import { email } from '../../validators/email'
 import { nonumber } from '../../validators/nonumbers'
 import { issamevalue } from '../../validators/issamevalue'
+import { slug } from '../../validators/slug'
 
 const content = (type, key) => contentMock[type]?.[key]
 
@@ -26,6 +27,9 @@ const getForm = (formKey, errorState) => {
       }
       if (field.key === 'checkBox') {
         field.validators = [{ name: 'checkbox', validate: () => true }]
+      }
+      if (field.key === 'slug') {
+        field.validators = [slug]
       }
       if (field.key === 'select') {
         field.validators = [{ name: 'select', validate: () => true }]

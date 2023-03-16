@@ -151,6 +151,15 @@
           "component":"MeshInput",
           "autocomplete": "on",
           "type":"text",
+          "id":"5",
+          "key": "slug",
+          "required": true,
+          "highlightValidation": true
+        },
+        { 
+          "component":"MeshInput",
+          "autocomplete": "on",
+          "type":"text",
           "id":"0",
           "key": "firstName",
           "required": true,

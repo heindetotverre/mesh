@@ -7,6 +7,7 @@
     "lastName": "Last name",
     "checkBox": "Checkbox",
     "select": "Select a number",
+    "slug": "Enter a slug",
     "loginButton": "Login",
     "registerButton": "Register",
     "formButton": "Submit"
@@ -16,6 +17,7 @@
     "password": "password not valid",
     "nonumber": "no numbers allowed",
     "issamevalue": "must be same value",
+    "slug": "for a slug, only letters, numbers and dashes are allowed",
     "default": "standard validation message"
   },
   "messages": {
