@@ -49,7 +49,7 @@
     validationResult.value.canSubmit && props.highlightValidation && currentValue.value ? 'input--validated' : ''
   ])
   const currentValue = computed({ 
-    get: () => props.modelValue || props.default, 
+    get: () => props.modelValue !== undefined ? props.modelValue : props.default, 
     set: (value) => [emit('update:modelValue', value), validate({})]
   })
   const secondValidationValue = computed(() => props.secondValidationValue)

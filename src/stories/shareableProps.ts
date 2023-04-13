@@ -40,7 +40,7 @@ export default {
   },
   modelValue: {
     type: [String,Number,Boolean,Array,Object],
-    default: ''
+    default: undefined
   },
   name: {
     type: String,
