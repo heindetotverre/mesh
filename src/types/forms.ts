@@ -13,6 +13,7 @@ interface Form {
 interface FormField {
   autocomplete?: string,
   component: string,
+  default?: any,
   disabled?: boolean,
   domclass?: string[],
   highlightValidation?: boolean,

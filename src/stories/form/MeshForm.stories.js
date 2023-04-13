@@ -93,15 +93,10 @@ Error.args = {
   }
 };
 
-export const Filled = Template.bind({});
-Filled.args = {
-  form: getForm('error', true),
-  content: content,
-  formValues: {
-    firstName: 'Testie',
-    lastName: 'McTestFace',
-    email: 'nonumberemail@validator.test'
-  }
+export const PreFilledFromData = Template.bind({});
+PreFilledFromData.args = {
+  form: getForm('prefilled', true),
+  content: content
 };
 
 export const PasswordCheck = Template.bind({});

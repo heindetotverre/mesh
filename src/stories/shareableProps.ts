@@ -6,6 +6,10 @@ export default {
     type: String,
     default: ''
   },
+  default: {
+    type: [String,Number,Boolean,Array,Object],
+    default: ''
+  },
   disabled: {
     type: Boolean,
     default: false

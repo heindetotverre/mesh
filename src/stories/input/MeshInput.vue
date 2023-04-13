@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, watch } from "vue";
+  import { computed, onBeforeMount, ref, watch } from "vue";
   import shareableProps from "../shareableProps"
   import shareableEmits from "../shareableEmits"
   import { useValidation } from '../../composables/useValidation'
@@ -49,7 +49,7 @@
     validationResult.value.canSubmit && props.highlightValidation && currentValue.value ? 'input--validated' : ''
   ])
   const currentValue = computed({ 
-    get: () => props.modelValue, 
+    get: () => props.modelValue || props.default, 
     set: (value) => [emit('update:modelValue', value), validate({})]
   })
   const secondValidationValue = computed(() => props.secondValidationValue)
@@ -69,6 +69,8 @@
       validate(newVal)
     }
   })
+
+  onBeforeMount(() => emit('update:modelValue', currentValue.value))
 
   const onBlur = () => {
     focus.value = false

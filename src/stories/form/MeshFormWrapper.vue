@@ -13,6 +13,7 @@
         :id="`${field.key}_${field.id}`"
         :is="field.component"
         class="m-t-1"
+        :default="field.default"
         :force-validation="forceValidation"
         :highlight-validation="field.highlightValidation"
         :label="content('labels', field.key)"

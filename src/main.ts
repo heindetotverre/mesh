@@ -4,6 +4,7 @@ import MeshInput from './stories/input/MeshInput.vue';
 import MeshSelect from './stories/select/MeshSelect.vue';
 import MeshFormWrapper from './stories/form/MeshFormWrapper.vue';
 import MeshForm from './stories/form/MeshForm.vue';
+import shareableProps from './stories/shareableProps';
 import {
   Content,
   Form,
@@ -23,7 +24,7 @@ export default {
     app.component('MeshFormWrapper', MeshFormWrapper);
   }
 };
-export { MeshButton, MeshInput, MeshSelect, MeshForm, MeshFormWrapper, useValidation };
+export { MeshButton, MeshInput, MeshSelect, MeshForm, MeshFormWrapper, useValidation, shareableProps };
 export * as validators from './validators/index';
 export type { 
   Content,
