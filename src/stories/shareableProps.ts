@@ -8,7 +8,7 @@ export default {
   },
   default: {
     type: [String,Number,Boolean,Array,Object],
-    default: ''
+    default: null
   },
   disabled: {
     type: Boolean,
@@ -57,7 +57,7 @@ export default {
   type: {
     type: String,
     default: 'text',
-    validator: (value : string) => ['text', 'checkbox', 'password', 'email', 'button', 'submit', 'select'].includes(value)
+    validator: (value : string) => ['text', 'checkbox', 'password', 'email', 'button', 'submit', 'select', 'time'].includes(value)
   },
   validators: {
     type: Array as PropType<Validator[]>,
