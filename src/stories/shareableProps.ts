@@ -57,7 +57,7 @@ export default {
   type: {
     type: String,
     default: 'text',
-    validator: (value : string) => ['text', 'checkbox', 'password', 'email', 'button', 'submit', 'select', 'time'].includes(value)
+    validator: (value : string) => ['text', 'checkbox', 'password', 'email', 'button', 'submit', 'select', 'time', 'date'].includes(value)
   },
   validators: {
     type: Array as PropType<Validator[]>,
