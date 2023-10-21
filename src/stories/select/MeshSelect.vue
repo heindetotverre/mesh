@@ -32,7 +32,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, ref, onBeforeMount } from "vue";
+import { computed, ref } from "vue";
 import shareableProps from "../shareableProps"
 import shareableEmits from "../shareableEmits"
 import { useValidation } from '../../composables/useValidation'
