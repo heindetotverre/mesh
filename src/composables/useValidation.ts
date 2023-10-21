@@ -16,10 +16,15 @@ export const useValidation = (
     validate({ validateLoose: true })
   })
   
-  const getValidationResults = ({ validateStrict, validateLoose } : ValidationConfig) : { key : string }[] => {
-    return fieldValidators.reduce((acc : { key : string }[], curr) => {
+  const getValidationResults = ({ validateStrict, validateLoose, specificValue } : ValidationConfig) : { key : string }[] => {
+    const test = fieldValidators.reduce((acc : { key : string }[], curr) => {
       const meta = {
         key: curr.name
+      }
+      if (specificValue) {
+        if (!curr.validate(specificValue, optionalSecondValidation?.value)) {
+          return [...acc, meta]
+        }
       }
       if (validateStrict && !curr.validate(currentValue.value, optionalSecondValidation?.value)) {
         return [...acc, meta]
@@ -29,16 +34,26 @@ export const useValidation = (
       }
       return acc
     }, [])
+    return test
   }
 
-  const isValid = () => {
+  const isValid = async ({ specificValue } : any | undefined={}) => {
+    if (specificValue) {
+      return !getValidationResults({ specificValue }).length
+    }
     if (isRequired) {
       return currentValue.value && !getValidationResults({ validateStrict: true }).length
     }
     return (!getValidationResults({ validateStrict: true }).length)
   }
 
-  const validate = ({ clearLooseValidation, clearStrictValidation, validateLoose, validateStrict } : ValidationConfig) => {
+  const validate = async ({ clearLooseValidation, clearStrictValidation, validateLoose, validateStrict, specificValue } : ValidationConfig) => {
+    if (specificValue) {
+      validationResult.value.messages = getValidationResults({ specificValue })
+      validationResult.value.canSubmit = await isValid({ specificValue })
+      emit('validate', validationResult.value)
+      return
+    }
     if (clearStrictValidation) {
         validationResult.value.messages = []
         validationResult.value.canSubmit = false;
@@ -53,7 +68,7 @@ export const useValidation = (
     if (validateLoose) {
       validationResult.value.messages = getValidationResults({ validateLoose })
     }
-    validationResult.value.canSubmit = isValid()
+    validationResult.value.canSubmit = await isValid()
     emit('validate', validationResult.value)
   }
 

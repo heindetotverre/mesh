@@ -36,7 +36,8 @@ interface ValidationConfig {
   clearLooseValidation?: boolean,
   clearStrictValidation?: boolean,
   validateLoose?: boolean,
-  validateStrict?: boolean
+  validateStrict?: boolean,
+  specificValue?: any
 }
 
 interface ValidationResult {

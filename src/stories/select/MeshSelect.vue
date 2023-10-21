@@ -32,7 +32,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, onBeforeMount } from "vue";
 import shareableProps from "../shareableProps"
 import shareableEmits from "../shareableEmits"
 import { useValidation } from '../../composables/useValidation'
@@ -58,7 +58,7 @@ import { useValidation } from '../../composables/useValidation'
   ])
   const currentValue = computed({ 
     get: () => props.modelValue, 
-    set: (value) => [emit('update:modelValue', value), validate({})]
+    set: (value) => onInput(value)
   })
 
   const { validate } = useValidation(
@@ -69,6 +69,11 @@ import { useValidation } from '../../composables/useValidation'
     },
     emit
   )
+
+  const onInput = (value : any) => {
+    emit('update:modelValue', value)
+    validate({ specificValue: value })
+  }
 
 
 </script>

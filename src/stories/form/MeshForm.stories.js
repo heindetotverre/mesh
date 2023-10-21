@@ -64,11 +64,11 @@ const Template = (args) => ({
       forceValidation.value = { clearStrictValidation: true }
     }
 
-    const test = (payload) => {
-      console.log(payload)
+    const onInput = (payload) => {
+      console.log('Form: onInput: ', payload)
     }
 
-    return { args, onSubmit, formValues, clearForm, clearValidation, forceValidation, test }
+    return { args, onSubmit, formValues, clearForm, clearValidation, forceValidation, onInput }
   },
   template:`
     <FormWrapper
@@ -77,7 +77,7 @@ const Template = (args) => ({
       :form="args.form"
       :formValues="formValues"
       :emit-input="true"
-      @input="test"
+      @input="onInput"
       @submit="onSubmit"
     />
     <button @click="clearForm">clear form</button>
