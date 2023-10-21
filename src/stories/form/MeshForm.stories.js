@@ -125,3 +125,9 @@ Select.args = {
   form: getForm('select', true),
   content: content
 };
+
+export const Textarea = Template.bind({});
+Textarea.args = {
+  form: getForm('textarea', true),
+  content: content
+};

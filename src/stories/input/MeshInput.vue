@@ -7,7 +7,20 @@
     >
       <slot name="label" />
     </label>
-    <input
+    <textarea
+      v-if="type === 'textarea'"
+      :autocomplete="autocomplete"
+      :disabled="disabled"
+      :id="id"
+      :name="name"
+      :type="type"
+      :required="required"
+      @blur="onBlur"
+      @focus="onFocus"
+      @input="validate({})"
+      v-model="currentValue as string"
+    />
+    <input v-else
       :autocomplete="autocomplete"
       :disabled="disabled"
       :id="id"

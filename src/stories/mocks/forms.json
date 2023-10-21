@@ -223,6 +223,47 @@
           "type":"button"
         }
       ]
+    },
+    "textarea": {
+      "meta": {
+        "name":"textarea",
+        "multipart":false
+      },
+      "fields":[
+        { 
+          "component":"MeshInput",
+          "autocomplete": "on",
+          "type":"text",
+          "id":"0",
+          "key": "firstName",
+          "required": true,
+          "highlightValidation": true
+        },
+        { 
+          "component":"MeshInput",
+          "type":"textarea",
+          "id":"1",
+          "key": "description",
+          "required": true,
+          "highlightValidation": true
+        },
+        { 
+          "component":"MeshSelect",
+          "type":"select",
+          "id":"2",
+          "key": "select",
+          "options": [
+            "one",
+            "two"
+          ]
+        },
+        {
+          "component":"MeshButton",
+          "id":"3",
+          "key":"formButton",
+          "type":"button"
+        }
+      ]
     }
   }
 }

@@ -20,7 +20,7 @@ export default {
 const Template = (args) => ({
   components: { MeshInput },
   setup() {
-    const inputValue = ref('test')
+    const inputValue = ref('')
     const updateModel = (event) => inputValue.value = event
     const error = 'This is a error message'
 
@@ -48,6 +48,15 @@ Text.args = {
   type: 'text',
   label: 'This is a text input',
   name: 'text',
+  validationResult: true
+}
+
+export const Textarea = Template.bind({})
+Textarea.args = {
+  id: 'id',
+  type: 'textarea',
+  label: 'This is a textarea input',
+  name: 'textarea',
   validationResult: true
 }
 
