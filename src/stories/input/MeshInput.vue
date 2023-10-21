@@ -18,7 +18,7 @@
       @blur="onBlur"
       @focus="onFocus"
       @input="validate({})"
-      v-model="currentValue as string"
+      v-model="(currentValue as string)"
     />
     <input v-else
       :autocomplete="autocomplete"
