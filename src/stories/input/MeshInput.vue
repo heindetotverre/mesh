@@ -17,8 +17,8 @@
       :required="required"
       @blur="onBlur"
       @focus="onFocus"
-      @input="validate({})"
-      v-model="(currentValue as string)"
+      @input="onInput"
+      :value="textAreaValue"
     />
     <input v-else
       :autocomplete="autocomplete"
@@ -66,6 +66,7 @@
     set: (value) => [emit('update:modelValue', value), validate({})]
   })
   const secondValidationValue = computed(() => props.secondValidationValue)
+  const textAreaValue = computed(() => currentValue.value as string)
 
   const { validate, validationResult } = useValidation(
     {
@@ -93,6 +94,11 @@
   const onFocus = () => {
     focus.value = true
     validate({ clearLooseValidation: true })
+  }
+
+  const onInput = (event : any) => {
+    emit('update:modelValue', event.target.value)
+    validate({})
   }
 
 </script>
